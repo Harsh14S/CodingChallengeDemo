@@ -10,17 +10,10 @@ import {
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {statusBarHeight} from '../../assets/Constants';
-import * as Api from '../../common/Api';
-import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
-import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
 import CustomFullLoader from '../../common/components/CustomFullLoader';
 import * as Colors from '../../assets/Colors';
 import GreetingComponent from './GreetingComponent';
 import RenderDataComponent from './RenderDataComponent';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import IconLinks from '../../assets/icons/IconLinks';
-import {Context} from '../../../global/ContextProvider';
-import {Modalize} from 'react-native-modalize';
 import CustomModal from '../../common/components/CustomModal';
 
 export default HomeScreen = ({navigation}) => {
@@ -32,18 +25,16 @@ export default HomeScreen = ({navigation}) => {
   const [apiData, setAPIData] = useState([]);
   const bottomSheet = useRef(null);
 
-  useEffect(() => {
-    setLoader(true);
-    // defaultApiCall();
-  }, []);
+  // setLoader(true);
+  // defaultApiCall();
 
-  useEffect(() => {
-    if (GetTodoData?.GetTodoDataSuccess) {
-      if (GetTodoData?.data) {
-        setLoader(false);
-      }
-    }
-  }, [GetTodoData]);
+  // useEffect(() => {
+  //   if (GetTodoData?.GetTodoDataSuccess) {
+  //     if (GetTodoData?.data) {
+  //       setLoader(false);
+  //     }
+  //   }
+  // }, [GetTodoData]);
 
   return (
     <View style={styles.container}>
@@ -55,7 +46,6 @@ export default HomeScreen = ({navigation}) => {
       />
       <GreetingComponent headerStyle={{marginBottom: 10}} />
       <RenderDataComponent setLoader={setLoader} />
-
       <CustomModal bottomSheetRef={bottomSheet} navigation={navigation} />
     </View>
   );

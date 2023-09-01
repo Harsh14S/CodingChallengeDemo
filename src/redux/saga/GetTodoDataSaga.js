@@ -9,8 +9,9 @@ import * as Api from '../../common/Api';
 
 export function* GetTodoDataAsync() {
   try {
-    // console.log('GetTodoDataAsync ', Api.getTodoData);
     const response = yield call(Api.getTodoData);
+    console.log('GetTodoDataAsync response --', response);
+
     yield put({type: GET_TODO_DATA_SUCCESS, payload: response});
   } catch (e) {
     yield put({type: GET_TODO_DATA_FAILED, payload: e});

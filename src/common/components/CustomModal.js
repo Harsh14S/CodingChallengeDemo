@@ -12,8 +12,12 @@ import * as Colors from '../../assets/Colors';
 import {Modalize} from 'react-native-modalize';
 import {Context} from '../../../global/ContextProvider';
 import IconLinks from '../../assets/icons/IconLinks';
+import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
+import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
+import {useDispatch} from 'react-redux';
 
 export default CustomModal = ({bottomSheetRef, navigation}) => {
+  const dispatch = useDispatch();
   const {currentSelected, setCurrentSelected} = useContext(Context);
 
   function btn_show() {
@@ -22,6 +26,15 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
   function btn_profile() {
     navigation.replace('Profile');
   }
+  // function btn_todo() {
+  //   setCurrentSelected('todo');
+  //   dispatch(GetTodoDataAction());
+  // }
+  // function btn_posts() {
+  //   setCurrentSelected('posts');
+  //   dispatch(GetPostsDataAction());
+  // }
+
   return (
     <Modalize
       ref={bottomSheetRef}
@@ -39,9 +52,7 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
           <TouchableOpacity
             disabled={currentSelected === 'todo'}
             style={[styles.dataBtnStyle, {marginBottom: 20}]}
-            onPress={() => {
-              setCurrentSelected('todo');
-            }}>
+            onPress={() => btn_todo()}>
             <Image
               style={[
                 styles.btnIcon,
@@ -68,9 +79,7 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
           <TouchableOpacity
             disabled={currentSelected === 'posts'}
             style={styles.dataBtnStyle}
-            onPress={() => {
-              setCurrentSelected('posts');
-            }}>
+            onPress={() => btn_posts()}>
             <Image
               style={[
                 styles.btnIcon,

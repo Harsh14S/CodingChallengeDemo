@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   txtInputStyle: {
     flex: 1,
     padding: 10,
+    color: Colors.Black,
   },
   btnStyle: {
     marginRight: 5,

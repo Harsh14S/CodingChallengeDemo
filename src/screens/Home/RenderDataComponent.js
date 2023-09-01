@@ -14,40 +14,43 @@ export default RenderDataComponent = ({setLoader}) => {
   const GetPostsData = useSelector(state => state.GetPostsDataReducer);
 
   useEffect(() => {
+    // dispatch(GetTodoDataAction());
+  }, []);
+  useEffect(() => {
+    console.log('currentSelected --> ', currentSelected);
     // setLoader(true);
-    if (currentSelected === 'todo') {
-      dispatch(GetTodoDataAction());
-    } else if (currentSelected === 'posts') {
-      dispatch(GetPostsDataAction());
-    }
+    // if (currentSelected === 'todo') {
+    //   console.log('selected todo');
+
+    // } else if (currentSelected === 'posts') {
+    // }
   }, [currentSelected]);
 
   useEffect(() => {
     if (currentSelected === 'todo') {
-      // console.log(object)
+      console.log('inside todo GetTodoData');
       if (GetTodoData?.GetTodoDataSuccess) {
         if (GetTodoData?.data) {
-          // setLoader(false);
+          console.log('SJHJSA', GetTodoData);
+          setLoader(false);
           setData(GetTodoData?.data);
         }
       }
-    }
-  }, [GetTodoData]);
-
-  useEffect(() => {
-    if (currentSelected === 'posts') {
+      console.log('GetTodoData?.data --> ', GetTodoData);
+    } else if (currentSelected === 'posts') {
       if (GetPostsData?.GetPostsDataSuccess) {
         if (GetPostsData?.data) {
-          // setLoader(false);
+          setLoader(false);
           setData(GetPostsData?.data);
+          console.log('GetPostsData?.data --> ', GetPostsData?.data);
         }
       }
     }
-  }, [GetPostsData]);
-
+  }, [GetPostsData, GetTodoData, currentSelected]);
   return (
     <View style={styles.container}>
       <FlatList
+        initialNumToRender={30}
         contentContainerStyle={{paddingBottom: 50, marginHorizontal: 30}}
         showsVerticalScrollIndicator={false}
         data={data}
