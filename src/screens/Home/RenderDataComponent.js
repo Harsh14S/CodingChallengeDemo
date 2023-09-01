@@ -1,20 +1,49 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import * as Colors from '../../assets/Colors';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {Context} from '../../../global/ContextProvider';
+import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
+import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
 
-export default RenderDataComponent = ({}) => {
+export default RenderDataComponent = ({setLoader}) => {
+  const dispatch = useDispatch();
+  const {currentSelected, setCurrentSelected} = useContext(Context);
   const [data, setData] = useState([]);
   const GetTodoData = useSelector(state => state.GetTodoDataReducer);
   const GetPostsData = useSelector(state => state.GetPostsDataReducer);
 
   useEffect(() => {
-    if (GetTodoData?.GetTodoDataSuccess) {
-      if (GetTodoData?.data) {
-        setData(GetTodoData?.data);
+    // setLoader(true);
+    if (currentSelected === 'todo') {
+      dispatch(GetTodoDataAction());
+    } else if (currentSelected === 'posts') {
+      dispatch(GetPostsDataAction());
+    }
+  }, [currentSelected]);
+
+  useEffect(() => {
+    if (currentSelected === 'todo') {
+      // console.log(object)
+      if (GetTodoData?.GetTodoDataSuccess) {
+        if (GetTodoData?.data) {
+          // setLoader(false);
+          setData(GetTodoData?.data);
+        }
       }
     }
   }, [GetTodoData]);
+
+  useEffect(() => {
+    if (currentSelected === 'posts') {
+      if (GetPostsData?.GetPostsDataSuccess) {
+        if (GetPostsData?.data) {
+          // setLoader(false);
+          setData(GetPostsData?.data);
+        }
+      }
+    }
+  }, [GetPostsData]);
 
   return (
     <View style={styles.container}>

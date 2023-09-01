@@ -10,10 +10,8 @@ import React, {
 export const Context = createContext();
 
 const ContextProvider = ({children}) => {
-  const bottomSheetRef = useRef(true);
   const [currentSelected, setCurrentSelected] = useState('todo');
   const value = {
-    bottomSheetRef,
     currentSelected,
     setCurrentSelected,
   };

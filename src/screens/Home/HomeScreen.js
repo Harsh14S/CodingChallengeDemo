@@ -24,7 +24,6 @@ import {Modalize} from 'react-native-modalize';
 import CustomModal from '../../common/components/CustomModal';
 
 export default HomeScreen = ({navigation}) => {
-  const dispatch = useDispatch();
   const signUpData = useSelector(state => state.SignUpReducer);
   const GetTodoData = useSelector(state => state.GetTodoDataReducer);
   const GetPostsData = useSelector(state => state.GetPostsDataReducer);
@@ -35,7 +34,7 @@ export default HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     setLoader(true);
-    defaultApiCall();
+    // defaultApiCall();
   }, []);
 
   useEffect(() => {
@@ -46,10 +45,6 @@ export default HomeScreen = ({navigation}) => {
     }
   }, [GetTodoData]);
 
-  async function defaultApiCall() {
-    dispatch(GetTodoDataAction());
-  }
-
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -59,7 +54,7 @@ export default HomeScreen = ({navigation}) => {
         loaderColor={Colors.DarkGreen}
       />
       <GreetingComponent headerStyle={{marginBottom: 10}} />
-      <RenderDataComponent />
+      <RenderDataComponent setLoader={setLoader} />
 
       <CustomModal bottomSheetRef={bottomSheet} navigation={navigation} />
     </View>

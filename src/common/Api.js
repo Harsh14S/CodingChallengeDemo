@@ -5,13 +5,11 @@ const postsApi = 'https://jsonplaceholder.typicode.com/posts';
 
 module.exports = {
   async getTodoData() {
-    // console.log('getTodoData called');
     return fetch(`${todoApi}`, {
       method: 'GET',
     })
       .then(async res => {
         const data = await res.json();
-        // console.log('getTodoData ------->', res);
         return data;
       })
       .catch(e => {
