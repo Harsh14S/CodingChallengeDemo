@@ -22,6 +22,7 @@ import IconLinks from '../../assets/icons/IconLinks';
 import {Context} from '../../../global/ContextProvider';
 import {Modalize} from 'react-native-modalize';
 import CustomModal from '../../common/components/CustomModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default HomeScreen = ({navigation}) => {
   const dispatch = useDispatch();

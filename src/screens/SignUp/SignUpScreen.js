@@ -61,7 +61,7 @@ export default SignUpScreen = ({navigation}) => {
           googleLogin: true,
         };
         dispatch(SignUpAction(obj));
-        navigation.replace('Home');
+        navigation.navigate('Home');
 
         // console.log('userInfo ----> ', obj);
       });

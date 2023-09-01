@@ -29,13 +29,8 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
       modalHeight={350}
       alwaysOpen={60}
       handlePosition="inside">
-      <View style={{height: 350, width: '100%'}}>
-        <View
-          style={{
-            flex: 1,
-            padding: 40,
-            justifyContent: 'center',
-          }}>
+      <View style={styles.main}>
+        <View style={styles.container}>
           <TouchableOpacity
             disabled={currentSelected === 'todo'}
             style={[styles.dataBtnStyle, {marginBottom: 20}]}
@@ -95,44 +90,16 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between',
-          }}>
+        <View style={styles.btnStyleView}>
           <TouchableOpacity
-            style={{
-              paddingHorizontal: 35,
-              flex: 1,
-              height: 50,
-              backgroundColor: Colors.LightGrey,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginRight: 5,
-              borderTopRightRadius: 6,
-            }}
+            style={styles.btnShowStyle}
             onPress={() => btn_show()}>
-            <Text
-              style={{fontSize: 20, color: Colors.Black, fontWeight: '500'}}>
-              {'Show'}
-            </Text>
+            <Text style={styles.btnShowText}>{'Show'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{
-              flex: 1,
-              paddingHorizontal: 35,
-              height: 50,
-              backgroundColor: Colors.LightGrey,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderTopLeftRadius: 6,
-            }}
+            style={styles.btnProfileStyle}
             onPress={() => btn_profile()}>
-            <Text
-              style={{fontSize: 20, color: Colors.Black, fontWeight: '500'}}>
-              {'Profile'}
-            </Text>
+            <Text style={styles.btnProfileText}>{'Profile'}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -141,6 +108,15 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  main: {
+    height: 350,
+    width: '100%',
+  },
+  container: {
+    flex: 1,
+    padding: 40,
+    justifyContent: 'center',
+  },
   modalStyle: {
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 6},
@@ -163,6 +139,41 @@ const styles = StyleSheet.create({
       height: 0,
       width: 0,
     },
+  },
+  btnStyleView: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  btnShowStyle: {
+    paddingHorizontal: 35,
+    flex: 1,
+    height: 50,
+    backgroundColor: Colors.LightGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 5,
+    borderTopRightRadius: 6,
+  },
+
+  btnShowText: {
+    fontSize: 20,
+    color: Colors.Black,
+    fontWeight: '500',
+  },
+  btnProfileText: {
+    fontSize: 20,
+    color: Colors.Black,
+    fontWeight: '500',
+  },
+  btnProfileStyle: {
+    flex: 1,
+    paddingHorizontal: 35,
+    height: 50,
+    backgroundColor: Colors.LightGrey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderTopLeftRadius: 6,
   },
   btnIcon: {
     height: 20,
