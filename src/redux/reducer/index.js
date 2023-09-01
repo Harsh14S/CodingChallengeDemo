@@ -1,11 +1,15 @@
 import {combineReducers} from 'redux';
 import {RESET_ALL_DATA} from '../types';
 import SignUpReducer from './SignUpReducer';
+import GetTodoDataReducer from './GetTodoDataReducer';
+import GetPostsDataReducer from './GetPostsDataReducer';
 
 // import LoginReducer from "./LoginReducer";
 
 const appReducer = combineReducers({
-  SignUpData: SignUpReducer,
+  SignUpReducer: SignUpReducer,
+  GetTodoDataReducer: GetTodoDataReducer,
+  GetPostsDataReducer: GetPostsDataReducer,
 });
 
 const rootReducer = (state, action) => {

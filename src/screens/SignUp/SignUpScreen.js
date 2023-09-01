@@ -1,6 +1,7 @@
 import {
   Dimensions,
   Image,
+  LayoutAnimation,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -9,15 +10,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as Colors from '../../assets/Colors';
-import CustomLoginTextInput from '../../components/CustomLoginTextInput';
+import CustomLoginTextInput from '../../common/components/CustomLoginTextInput';
 import IconLinks from '../../assets/icons/IconLinks';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {
+  emailRegEx,
+  nameRegEx,
+  nameRegEx2,
+  passwordRegEx2,
+  statusBarHeight,
+} from '../../assets/Constants';
+import {useDispatch} from 'react-redux';
+import {SignUpAction} from '../../redux/action/SignUpAction';
 
 GoogleSignin.configure({
   iosClientId:
@@ -26,18 +36,35 @@ GoogleSignin.configure({
     '277454502150-gpua89cdkmk2riph4aciv0c456t50bd9.apps.googleusercontent.com',
   forceCodeForRefreshToken: true,
 });
-const statusBarHeight = StatusBar.currentHeight;
-export default SignUpScreen = () => {
-  const [emailV, setEmailV] = useState('');
-  const [passwordV, setPasswordV] = useState('');
-  const [cPasswordV, setCPasswordV] = useState('');
+
+export default SignUpScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  const [nameV, setNameV] = useState('Test User');
+  const [emailV, setEmailV] = useState('ok@mailinator.com');
+  const [passwordV, setPasswordV] = useState('Test@123');
+  const [cPasswordV, setCPasswordV] = useState('Test@123');
+  const [nameE, setNameE] = useState('');
+  const [emailE, setEmailE] = useState('');
+  const [passwordE, setPasswordE] = useState('');
+  const [cPasswordE, setCPasswordE] = useState('');
   const [userInfo, setUserInfo] = useState({});
+  const [disabled, setDisabled] = useState(true);
 
   async function btn_googleSignIn() {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log('userInfo ----> ', userInfo);
+      await GoogleSignin.signIn().then(res => {
+        const obj = {
+          name: res.user.name,
+          email: res.user.email,
+          googleLogin: true,
+        };
+        dispatch(SignUpAction(obj));
+        navigation.replace('Home');
+
+        // console.log('userInfo ----> ', obj);
+      });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -51,6 +78,58 @@ export default SignUpScreen = () => {
     }
   }
 
+  function btn_signUp() {
+    const obj = {
+      name: nameV,
+      email: emailV,
+      password: passwordV,
+      googleLogin: false,
+    };
+    dispatch(SignUpAction(obj));
+    navigation.replace('Home');
+  }
+  function validation() {
+    if (!nameRegEx2.test(nameV.trim())) {
+      setNameE('Please enter appropriate name');
+    } else {
+      setNameE('');
+    }
+    if (!emailRegEx.test(emailV)) {
+      setEmailE('Please enter a valid email');
+    } else {
+      setEmailE('');
+    }
+    if (!passwordRegEx2.test(passwordV)) {
+      setPasswordE(
+        'Must contain 8 characters, atleast one upperCase and a number',
+      );
+    } else {
+      setPasswordE('');
+    }
+    if (passwordV !== cPasswordV) {
+      setCPasswordE(`Password doesn't match`);
+    } else {
+      setCPasswordE('');
+    }
+
+    if (
+      nameRegEx2.test(nameV) &&
+      emailRegEx.test(emailV) &&
+      passwordRegEx2.test(passwordV) &&
+      passwordV === cPasswordV
+    ) {
+      btn_signUp();
+    }
+  }
+
+  useEffect(() => {
+    if (nameV.trim() && emailV.trim() && passwordV && cPasswordV) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [emailV, passwordV, cPasswordV]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -60,52 +139,81 @@ export default SignUpScreen = () => {
       <View style={styles.mainContainer}>
         <View style={styles.emailLoginContainer}>
           <CustomLoginTextInput
+            value={nameV}
+            icon={IconLinks.profileFill}
+            placeholder={'Enter your name'}
+            autoCorrect={false}
+            autoCapitalize="words"
+            onChangeText={text => {
+              setNameV(text);
+              setNameE('');
+            }}
+            onBlur={() => {}}
+            onFocus={() => {}}
+            containerStyle={{marginBottom: 15}}
+            eTxt={nameE}
+          />
+          <CustomLoginTextInput
             value={emailV}
-            icon={IconLinks.email}
+            icon={IconLinks.mailFill}
             placeholder={'Enter your email'}
             autoCorrect={false}
             keyboardType="email-address"
             autoCapitalize="none"
             onChangeText={text => {
               setEmailV(text);
+              setEmailE('');
             }}
             onBlur={() => {}}
             onFocus={() => {}}
             containerStyle={{marginBottom: 15}}
+            eTxt={emailE}
           />
           <CustomLoginTextInput
             value={passwordV}
-            icon={IconLinks.password}
+            icon={IconLinks.lockCloseFill}
             placeholder={'Enter your password'}
             autoCorrect={false}
             autoCapitalize="none"
-            secureTextEntry={true}
+            secure={true}
             onChangeText={text => {
               setPasswordV(text);
+              setPasswordE('');
             }}
             onBlur={() => {}}
             onFocus={() => {}}
             containerStyle={{marginBottom: 15}}
+            eTxt={passwordE}
           />
           <CustomLoginTextInput
             value={cPasswordV}
-            icon={IconLinks.password}
+            icon={IconLinks.lockCloseFill}
             placeholder={'Confirm your password'}
             autoCorrect={false}
-            keyboardType="email-address"
             autoCapitalize="none"
-            secureTextEntry={true}
+            secure={true}
             onChangeText={text => {
               setCPasswordV(text);
+              setCPasswordE('');
             }}
             onBlur={() => {}}
             onFocus={() => {}}
             containerStyle={{marginBottom: 30}}
+            eTxt={cPasswordE}
           />
         </View>
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.signUpBtn}>
-            <Text style={styles.btnTxt}>{'Sign Up'}</Text>
+          <TouchableOpacity
+            style={styles.signUpBtn}
+            disabled={disabled}
+            onPress={() => validation()}>
+            <Text
+              style={[
+                styles.btnTxt,
+                {color: disabled ? Colors.LightGrey : Colors.Black},
+              ]}>
+              {'Sign Up'}
+            </Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.separatorTxt}>Or</Text>
@@ -143,6 +251,7 @@ const styles = StyleSheet.create({
   },
   emailLoginContainer: {
     // backgroundColor: 'grey',
+    marginTop: 20,
   },
   separatorTxt: {
     textAlign: 'center',

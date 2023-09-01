@@ -5,7 +5,7 @@ export function* SignUpAsync({params}) {
   try {
     // const response = yield call(Api.Login, params);
     // console.log("data details 12345667778", response, params)
-    yield put({type: SIGN_UP_SUCCESS, payload: response});
+    yield put({type: SIGN_UP_SUCCESS, payload: params});
   } catch (e) {
     // console.log("login error saga--->", e);
     yield put({type: SIGN_UP_FAILED, payload: e});
