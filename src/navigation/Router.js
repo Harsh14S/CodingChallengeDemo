@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SignUpScreen from '../screens/SignUp/SignUpScreen';
+
 import * as Colors from '../assets/Colors';
 import HomeScreen from '../screens/Home/HomeScreen';
 import Profile from '../screens/Profile/Profile';
+import {Context} from '../../global/ContextProvider';
+import SignUpScreen from '../screens/LoginSignup/SignUpScreen';
+import LoginScreen from '../screens/LoginSignup/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default Router = () => {
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const {isUserLoggedIn, setIsUserLoggedIn} = useContext(Context);
 
   useEffect(() => {
     const checkUserAuthentication = async () => {
@@ -49,6 +52,7 @@ export default Router = () => {
           contentStyle: {backgroundColor: Colors.White},
         }}>
         <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     );
   }

@@ -7,7 +7,7 @@ import {
 
 import * as Api from '../../common/Api';
 
-export function* GetTodoDataAsync() {
+function* GetTodoDataAsync() {
   try {
     const response = yield call(Api.getTodoData);
     console.log('GetTodoDataAsync response --', response);
@@ -18,7 +18,7 @@ export function* GetTodoDataAsync() {
   }
 }
 
-export function* GetTodoDataSagaSaga() {
+export function* GetTodoDataSaga() {
   yield takeEvery(GET_TODO_DATA_REQUEST, GetTodoDataAsync);
 }
-export default GetTodoDataSagaSaga;
+export default GetTodoDataSaga;

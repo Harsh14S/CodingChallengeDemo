@@ -26,8 +26,9 @@ import {
   passwordRegEx2,
   statusBarHeight,
 } from '../../assets/Constants';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {SignUpAction} from '../../redux/action/SignUpAction';
+import {LoginSignupStyle as styles} from './LoginSignupStyle';
 
 GoogleSignin.configure({
   iosClientId:
@@ -39,6 +40,7 @@ GoogleSignin.configure({
 
 export default SignUpScreen = ({navigation}) => {
   const dispatch = useDispatch();
+  const SignUpData = useSelector(state => state.SignUpReducer);
 
   const [nameV, setNameV] = useState('Test User');
   const [emailV, setEmailV] = useState('ok@mailinator.com');
@@ -129,6 +131,12 @@ export default SignUpScreen = ({navigation}) => {
       setDisabled(true);
     }
   }, [emailV, passwordV, cPasswordV]);
+
+  useEffect(() => {
+    if (SignUpData?.SignUpSuccess) {
+      console.log('SignUpData ====> ', SignUpData);
+    }
+  }, [SignUpData]);
 
   return (
     <View style={styles.container}>
@@ -225,69 +233,15 @@ export default SignUpScreen = ({navigation}) => {
             <Text style={styles.btnTxt}>{'Google'}</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.loSiNavContainer}>
+          <Text style={styles.loSiTxt}>{'Are you already a user?'}</Text>
+          <TouchableOpacity
+            style={styles.loSiNavBtn}
+            onPress={() => navigation.replace('Login')}>
+            <Text style={styles.loSiNavTxt}>{'Login'}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: statusBarHeight,
-  },
-  headerContainer: {
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  headerTxt: {
-    fontSize: 30,
-    fontWeight: '700',
-    color: Colors.Black,
-  },
-  mainContainer: {
-    flex: 1,
-    marginHorizontal: 20,
-    paddingTop: 20,
-  },
-  emailLoginContainer: {
-    // backgroundColor: 'grey',
-    marginTop: 20,
-  },
-  separatorTxt: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: '500',
-    color: Colors.Black,
-    marginVertical: 30,
-  },
-  btnContainer: {
-    width: '100%',
-  },
-  signUpBtn: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    width: '100%',
-    paddingVertical: 7,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 3,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-  },
-  btnIcon: {
-    height: 20,
-    width: 20,
-    marginRight: 10,
-  },
-  btnTxt: {
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '500',
-    color: Colors.Black,
-  },
-});

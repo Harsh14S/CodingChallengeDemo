@@ -7,7 +7,7 @@ import {
 
 import * as Api from '../../common/Api';
 
-export function* GetPostsDataAsync() {
+function* GetPostsDataAsync() {
   try {
     const response = yield call(Api.getPostsData);
     yield put({type: GET_POSTS_DATA_SUCCESS, payload: response});

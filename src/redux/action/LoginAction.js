@@ -1,7 +1,7 @@
-import {SIGN_UP_REQUEST} from '../types';
-export const SignUpAction = params => {
+import {LOG_IN_REQUEST} from '../types';
+export const LoginAction = params => {
   return {
-    type: SIGN_UP_REQUEST,
+    type: LOG_IN_REQUEST,
     params,
   };
 };
