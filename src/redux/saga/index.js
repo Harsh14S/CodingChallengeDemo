@@ -1,8 +1,8 @@
 import {all} from 'redux-saga/effects';
-import SignUpSaga from './SignUpSaga';
-import {GetTodoDataAsync} from './GetTodoDataSaga';
+import GetTodoDataSagaSaga from './GetTodoDataSaga';
 import GetPostsDataSaga from './GetPostsDataSaga';
+import SignUpSaga from './SignUpSaga';
 
 export function* rootSaga() {
-  yield all([SignUpSaga(), GetTodoDataAsync(), GetPostsDataSaga()]);
+  yield all([SignUpSaga(), GetTodoDataSagaSaga(), GetPostsDataSaga()]);
 }

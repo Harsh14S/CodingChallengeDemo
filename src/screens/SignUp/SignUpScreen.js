@@ -61,7 +61,7 @@ export default SignUpScreen = ({navigation}) => {
           googleLogin: true,
         };
         dispatch(SignUpAction(obj));
-        navigation.replace('Home');
+        // navigation.navigate('Home');
 
         // console.log('userInfo ----> ', obj);
       });
@@ -86,7 +86,7 @@ export default SignUpScreen = ({navigation}) => {
       googleLogin: false,
     };
     dispatch(SignUpAction(obj));
-    navigation.replace('Home');
+    // navigation.replace('Home');
   }
   function validation() {
     if (!nameRegEx2.test(nameV.trim())) {

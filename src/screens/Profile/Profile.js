@@ -14,6 +14,7 @@ import {Context} from '../../../global/ContextProvider';
 import CustomModal from '../../common/components/CustomModal';
 import IconLinks from '../../assets/icons/IconLinks';
 import * as Colors from '../../assets/Colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default Profile = ({navigation}) => {
   const bottomSheet = useRef(null);
@@ -21,7 +22,10 @@ export default Profile = ({navigation}) => {
   const signUpData = useSelector(state => state.SignUpReducer);
   const [userData, setUserData] = useState({});
 
-  function btn_logout() {}
+  async function btn_logout() {
+    await AsyncStorage.removeItem('userData');
+    navigation.navigate('SignUp');
+  }
 
   useEffect(() => {
     if (signUpData?.SignUpSuccess) {
@@ -46,7 +50,11 @@ export default Profile = ({navigation}) => {
         </View>
       </View>
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.logoutBtn} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.logoutBtn}
+          onPress={() => {
+            btn_logout();
+          }}>
           <Text style={styles.btnTxt}>{'Logout'}</Text>
         </TouchableOpacity>
       </View>

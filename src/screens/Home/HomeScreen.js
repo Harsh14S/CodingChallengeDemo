@@ -15,6 +15,7 @@ import * as Colors from '../../assets/Colors';
 import GreetingComponent from './GreetingComponent';
 import RenderDataComponent from './RenderDataComponent';
 import CustomModal from '../../common/components/CustomModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default HomeScreen = ({navigation}) => {
   const signUpData = useSelector(state => state.SignUpReducer);
