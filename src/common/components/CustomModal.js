@@ -15,10 +15,16 @@ import IconLinks from '../../assets/icons/IconLinks';
 import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
 import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
 import {useDispatch} from 'react-redux';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
-export default CustomModal = ({bottomSheetRef, navigation}) => {
+export default CustomModal = ({
+  bottomSheetRef,
+  navigation,
+  currentSelected,
+  setLoader,
+}) => {
   const dispatch = useDispatch();
-  const {currentSelected, setCurrentSelected} = useContext(Context);
+  const {setCurrentSelected} = useContext(Context);
 
   function btn_show() {
     navigation.replace('Home');
@@ -26,24 +32,35 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
   function btn_profile() {
     navigation.replace('Profile');
   }
-  // function btn_todo() {
-  //   setCurrentSelected('todo');
-  //   dispatch(GetTodoDataAction());
-  // }
-  // function btn_posts() {
-  //   setCurrentSelected('posts');
-  //   dispatch(GetPostsDataAction());
-  // }
+  function btn_todo() {
+    setLoader(true);
+    setCurrentSelected('todo');
+    dispatch(GetTodoDataAction());
+    bottomSheetRef.current.collapse();
+  }
+  function btn_posts() {
+    setLoader(true);
+    setCurrentSelected('posts');
+    dispatch(GetPostsDataAction());
+    bottomSheetRef.current.collapse();
+  }
 
   return (
-    <Modalize
+    <BottomSheet
       ref={bottomSheetRef}
-      modalStyle={styles.modalStyle}
-      modalHeight={350}
-      alwaysOpen={60}
-      handlePosition="inside">
-      <View style={styles.main}>
-        <View style={styles.container}>
+      snapPoints={['5%', '30%']}
+      style={{
+        backgroundColor: Colors.White,
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
+        elevation: 2,
+        shadowOffset: {
+          height: 0,
+          width: 0,
+        },
+      }}>
+      <BottomSheetView style={styles.main}>
+        <BottomSheetView style={styles.container}>
           <TouchableOpacity
             disabled={currentSelected === 'todo'}
             style={[styles.dataBtnStyle, {marginBottom: 20}]}
@@ -98,40 +115,34 @@ export default CustomModal = ({bottomSheetRef, navigation}) => {
               {'Posts'}
             </Text>
           </TouchableOpacity>
-        </View>
-        <View style={styles.btnStyleView}>
+        </BottomSheetView>
+        <BottomSheetView style={styles.btnStyleView}>
           <TouchableOpacity
-            style={styles.btnShowStyle}
+            style={styles.bottomBtnStyle}
             onPress={() => btn_show()}>
-            <Text style={styles.btnShowText}>{'Show'}</Text>
+            <Text style={styles.bottomBtnTxt}>{'Show'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.btnProfileStyle}
+            style={styles.bottomBtnStyle}
             onPress={() => btn_profile()}>
-            <Text style={styles.btnProfileText}>{'Profile'}</Text>
+            <Text style={styles.bottomBtnTxt}>{'Profile'}</Text>
           </TouchableOpacity>
-        </View>
-      </View>
-    </Modalize>
+        </BottomSheetView>
+      </BottomSheetView>
+    </BottomSheet>
   );
 };
 
 const styles = StyleSheet.create({
   main: {
-    height: 350,
+    // height: 350,
+    flex: 1,
     width: '100%',
   },
   container: {
     flex: 1,
     padding: 40,
     justifyContent: 'center',
-  },
-  modalStyle: {
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 6},
-    shadowOpacity: 0.45,
-    shadowRadius: 16,
-    flex: 1,
   },
   dataBtnStyle: {
     backgroundColor: Colors.White,
@@ -143,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowOpacity: 0.5,
     shadowRadius: 1,
-    elevation: 1,
+    elevation: 2,
     shadowOffset: {
       height: 0,
       width: 0,
@@ -153,36 +164,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-  },
-  btnShowStyle: {
-    paddingHorizontal: 35,
-    flex: 1,
-    height: 50,
-    backgroundColor: Colors.LightGrey,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 5,
-    borderTopRightRadius: 6,
-  },
-
-  btnShowText: {
-    fontSize: 20,
-    color: Colors.Black,
-    fontWeight: '500',
-  },
-  btnProfileText: {
-    fontSize: 20,
-    color: Colors.Black,
-    fontWeight: '500',
-  },
-  btnProfileStyle: {
-    flex: 1,
-    paddingHorizontal: 35,
-    height: 50,
-    backgroundColor: Colors.LightGrey,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopLeftRadius: 6,
+    paddingHorizontal: 40,
+    paddingBottom: 20,
   },
   btnIcon: {
     height: 20,
@@ -195,5 +178,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     color: Colors.Black,
+  },
+  bottomBtnStyle: {
+    paddingHorizontal: 35,
+    width: '46%',
+    height: 40,
+    backgroundColor: Colors.White,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    elevation: 2,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+  },
+  bottomBtnTxt: {
+    fontSize: 20,
+    color: Colors.Black,
+    fontWeight: '500',
   },
 });

@@ -4,7 +4,6 @@ import * as Colors from '../../assets/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {Context} from '../../../global/ContextProvider';
 import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
-import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
 
 export default RenderDataComponent = ({setLoader}) => {
   const dispatch = useDispatch();
@@ -14,39 +13,26 @@ export default RenderDataComponent = ({setLoader}) => {
   const GetPostsData = useSelector(state => state.GetPostsDataReducer);
 
   useEffect(() => {
-    // dispatch(GetTodoDataAction());
+    dispatch(GetTodoDataAction());
   }, []);
-  useEffect(() => {
-    console.log('currentSelected --> ', currentSelected);
-    // setLoader(true);
-    // if (currentSelected === 'todo') {
-    //   console.log('selected todo');
-
-    // } else if (currentSelected === 'posts') {
-    // }
-  }, [currentSelected]);
 
   useEffect(() => {
     if (currentSelected === 'todo') {
-      console.log('inside todo GetTodoData');
       if (GetTodoData?.GetTodoDataSuccess) {
         if (GetTodoData?.data) {
-          console.log('SJHJSA', GetTodoData);
           setLoader(false);
           setData(GetTodoData?.data);
         }
       }
-      console.log('GetTodoData?.data --> ', GetTodoData);
     } else if (currentSelected === 'posts') {
       if (GetPostsData?.GetPostsDataSuccess) {
         if (GetPostsData?.data) {
-          setLoader(false);
           setData(GetPostsData?.data);
-          console.log('GetPostsData?.data --> ', GetPostsData?.data);
+          setLoader(false);
         }
       }
     }
-  }, [GetPostsData, GetTodoData, currentSelected]);
+  }, [GetPostsData, GetTodoData]);
   return (
     <View style={styles.container}>
       <FlatList

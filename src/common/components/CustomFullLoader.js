@@ -7,6 +7,7 @@ export default CustomFullLoader = ({showLoader, loaderSize, loaderColor}) => {
     <Modal visible={showLoader} statusBarTranslucent transparent={true}>
       <View style={styles.containerStyle}>
         <ActivityIndicator
+          style={styles.activityIndicator}
           size={loaderSize ? loaderSize : 'large'}
           color={loaderColor ? loaderColor : Colors.Green}
         />
@@ -17,15 +18,20 @@ export default CustomFullLoader = ({showLoader, loaderSize, loaderColor}) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: Colors.Transparent,
   },
   containerStyle: {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
     flex: 1,
+    paddingHorizontal: 40,
+  },
+  activityIndicator: {
+    backgroundColor: Colors.White,
+    padding: 25,
+    borderRadius: 8,
+    justifyContent: 'center',
   },
 });

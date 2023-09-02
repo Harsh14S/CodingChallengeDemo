@@ -13,5 +13,7 @@ export default IconLinks = {
   taskFill: require('../icons/taskFill.png'),
   post: require('../icons/post.png'),
   postFill: require('../icons/postFill.png'),
+  login: require('../icons/login.png'),
+  logout: require('../icons/logout.png'),
   google: require('../icons/google.png'),
 };

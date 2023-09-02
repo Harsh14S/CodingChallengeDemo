@@ -27,8 +27,8 @@ import {
   statusBarHeight,
 } from '../../assets/Constants';
 import {useDispatch} from 'react-redux';
-import {SignUpAction} from '../../redux/action/SignUpAction';
 import {LoginSignupStyle as styles} from './LoginSignupStyle';
+import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
 
 GoogleSignin.configure({
   iosClientId:
@@ -38,7 +38,7 @@ GoogleSignin.configure({
   forceCodeForRefreshToken: true,
 });
 
-export default SignUpScreen = ({navigation}) => {
+export default LoginScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   const [nameV, setNameV] = useState('Test User');
@@ -46,7 +46,6 @@ export default SignUpScreen = ({navigation}) => {
   const [passwordV, setPasswordV] = useState('Test@123');
   const [emailE, setEmailE] = useState('');
   const [passwordE, setPasswordE] = useState('');
-  const [userInfo, setUserInfo] = useState({});
   const [disabled, setDisabled] = useState(true);
 
   async function btn_googleSignIn() {
@@ -81,7 +80,7 @@ export default SignUpScreen = ({navigation}) => {
       password: passwordV,
       googleLogin: false,
     };
-    dispatch(SignUpAction(obj));
+    dispatch(CurrentUserAction(obj));
     // navigation.replace('Home');
   }
   function validation() {
@@ -150,6 +149,7 @@ export default SignUpScreen = ({navigation}) => {
             style={styles.signUpBtn}
             disabled={disabled}
             onPress={() => validation()}>
+            <Image style={styles.btnIcon} source={IconLinks.login} />
             <Text
               style={[
                 styles.btnTxt,

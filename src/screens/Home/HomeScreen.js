@@ -16,12 +16,14 @@ import GreetingComponent from './GreetingComponent';
 import RenderDataComponent from './RenderDataComponent';
 import CustomModal from '../../common/components/CustomModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Context} from '../../../global/ContextProvider';
 
 export default HomeScreen = ({navigation}) => {
+  const {currentSelected, setCurrentSelected} = useContext(Context);
   const signUpData = useSelector(state => state.SignUpReducer);
   const GetTodoData = useSelector(state => state.GetTodoDataReducer);
   const GetPostsData = useSelector(state => state.GetPostsDataReducer);
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const [userData, setUserData] = useState({});
   const [apiData, setAPIData] = useState([]);
   const bottomSheet = useRef(null);
@@ -36,6 +38,9 @@ export default HomeScreen = ({navigation}) => {
   //     }
   //   }
   // }, [GetTodoData]);
+  useEffect(() => {
+    // bottomSheet.current.open();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -47,7 +52,12 @@ export default HomeScreen = ({navigation}) => {
       />
       <GreetingComponent headerStyle={{marginBottom: 10}} />
       <RenderDataComponent setLoader={setLoader} />
-      <CustomModal bottomSheetRef={bottomSheet} navigation={navigation} />
+      <CustomModal
+        currentSelected={currentSelected}
+        bottomSheetRef={bottomSheet}
+        navigation={navigation}
+        setLoader={setLoader}
+      />
     </View>
   );
 };
@@ -56,5 +66,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: statusBarHeight,
+    backgroundColor: Colors.Black11,
   },
 });

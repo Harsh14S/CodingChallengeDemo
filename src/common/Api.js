@@ -10,7 +10,6 @@ module.exports = {
     })
       .then(async res => {
         const data = await res.json();
-        // console.log('getPostsData ------->', data);
         return data;
       })
       .catch(e => {
@@ -23,7 +22,6 @@ module.exports = {
     })
       .then(async res => {
         const data = await res.json();
-        console.log('getTodoData API ----> ', data);
         return data;
       })
       .catch(e => {

@@ -10,8 +10,6 @@ import * as Api from '../../common/Api';
 function* GetTodoDataAsync() {
   try {
     const response = yield call(Api.getTodoData);
-    console.log('GetTodoDataAsync response --', response);
-
     yield put({type: GET_TODO_DATA_SUCCESS, payload: response});
   } catch (e) {
     yield put({type: GET_TODO_DATA_FAILED, payload: e});

@@ -5,7 +5,7 @@ import moment from 'moment';
 import {useSelector} from 'react-redux';
 
 export default GreetingComponent = ({headerStyle}) => {
-  const signUpData = useSelector(state => state.SignUpReducer);
+  const CurrentUser = useSelector(state => state.CurrentUserReducer);
 
   const [greetTitle, setGreetTitle] = useState('');
 
@@ -29,12 +29,12 @@ export default GreetingComponent = ({headerStyle}) => {
     }
   }
   useEffect(() => {
-    if (signUpData?.SignUpSuccess) {
-      if (signUpData?.data) {
-        headerTitle(signUpData?.data);
+    if (CurrentUser?.CurrentUserSuccess) {
+      if (CurrentUser?.data) {
+        headerTitle(CurrentUser?.data);
       }
     }
-  }, [signUpData]);
+  }, [CurrentUser]);
   return (
     <View style={[styles.headerContainer, headerStyle]}>
       <Text style={styles.headerTxt}>{greetTitle}</Text>

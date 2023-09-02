@@ -8,6 +8,7 @@ import Profile from '../screens/Profile/Profile';
 import {Context} from '../../global/ContextProvider';
 import SignUpScreen from '../screens/LoginSignup/SignUpScreen';
 import LoginScreen from '../screens/LoginSignup/LoginScreen';
+import SplashScreen from '../screens/SplashScreen/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ export default Router = () => {
           headerShown: false,
           contentStyle: {backgroundColor: Colors.White},
         }}>
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>

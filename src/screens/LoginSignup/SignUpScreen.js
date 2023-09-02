@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import * as Colors from '../../assets/Colors';
 import CustomLoginTextInput from '../../common/components/CustomLoginTextInput';
 import IconLinks from '../../assets/icons/IconLinks';
@@ -27,8 +27,11 @@ import {
   statusBarHeight,
 } from '../../assets/Constants';
 import {useDispatch, useSelector} from 'react-redux';
-import {SignUpAction} from '../../redux/action/SignUpAction';
 import {LoginSignupStyle as styles} from './LoginSignupStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomFullLoader from '../../common/components/CustomFullLoader';
+import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
+import {Context} from '../../../global/ContextProvider';
 
 GoogleSignin.configure({
   iosClientId:
@@ -39,8 +42,9 @@ GoogleSignin.configure({
 });
 
 export default SignUpScreen = ({navigation}) => {
+  const {setIsUserLoggedIn} = useContext(Context);
   const dispatch = useDispatch();
-  const SignUpData = useSelector(state => state.SignUpReducer);
+  const CurrentUser = useSelector(state => state.CurrentUserReducer);
 
   const [nameV, setNameV] = useState('Test User');
   const [emailV, setEmailV] = useState('ok@mailinator.com');
@@ -52,6 +56,7 @@ export default SignUpScreen = ({navigation}) => {
   const [cPasswordE, setCPasswordE] = useState('');
   const [userInfo, setUserInfo] = useState({});
   const [disabled, setDisabled] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
 
   async function btn_googleSignIn() {
     try {
@@ -62,35 +67,64 @@ export default SignUpScreen = ({navigation}) => {
           email: res.user.email,
           googleLogin: true,
         };
-        dispatch(SignUpAction(obj));
-        // navigation.navigate('Home');
-
-        // console.log('userInfo ----> ', obj);
+        dispatch(CurrentUserAction(obj));
       });
     } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
+      console.log('Google signin error ----> ', error);
     }
   }
 
-  function btn_signUp() {
-    const obj = {
+  // saveAllUsers :- adds the user to allUser
+  async function saveAllUsers(item) {
+    try {
+      await AsyncStorage.setItem('allUser', JSON.stringify(item));
+    } catch (error) {
+      console.log('error while adding user: ', error);
+    }
+  }
+
+  // saveCurrentUser :- adds to Currrent User
+
+  async function saveCurrentUser(item) {
+    try {
+      await AsyncStorage.setItem('currentUser', JSON.stringify(item));
+    } catch (error) {
+      console.log('error while adding current user: ', error);
+    }
+  }
+
+  async function signUpFunction() {
+    const user = {
       name: nameV,
       email: emailV,
       password: passwordV,
       googleLogin: false,
     };
-    dispatch(SignUpAction(obj));
-    // navigation.replace('Home');
+
+    let res = await AsyncStorage.getItem('allUser');
+    let data = JSON.parse(res);
+
+    if (data) {
+      // check whether the user email exist or not from asyncStorage
+      const uniqueUser =
+        data?.filter(item => item?.email === user.email).length === 0;
+      if (uniqueUser) {
+        let obj = [...data, user];
+        saveAllUsers(obj);
+        dispatch(CurrentUserAction(user));
+      } else {
+        setEmailE('Email already taken');
+        setShowLoader(false);
+      }
+    } else {
+      let obj = [user];
+      saveAllUsers(obj);
+      dispatch(CurrentUserAction(user));
+    }
   }
-  function validation() {
+
+  function btn_signUp() {
+    setShowLoader(true);
     if (!nameRegEx2.test(nameV.trim())) {
       setNameE('Please enter appropriate name');
     } else {
@@ -120,7 +154,9 @@ export default SignUpScreen = ({navigation}) => {
       passwordRegEx2.test(passwordV) &&
       passwordV === cPasswordV
     ) {
-      btn_signUp();
+      signUpFunction();
+    } else {
+      setShowLoader(false);
     }
   }
 
@@ -133,14 +169,20 @@ export default SignUpScreen = ({navigation}) => {
   }, [emailV, passwordV, cPasswordV]);
 
   useEffect(() => {
-    if (SignUpData?.SignUpSuccess) {
-      console.log('SignUpData ====> ', SignUpData);
+    if (CurrentUser?.CurrentUserSuccess) {
+      if (CurrentUser?.data) {
+        saveCurrentUser(CurrentUser?.data);
+        setShowLoader(false);
+        setIsUserLoggedIn(true);
+      }
     }
-  }, [SignUpData]);
+    console.log('CurrentUser ====> ', CurrentUser);
+  }, [CurrentUser]);
 
   return (
     <View style={styles.container}>
       <SafeAreaView />
+      <CustomFullLoader showLoader={showLoader} />
       <View style={styles.headerContainer}>
         <Text style={styles.headerTxt}>{'SignUp'}</Text>
       </View>
@@ -214,7 +256,8 @@ export default SignUpScreen = ({navigation}) => {
           <TouchableOpacity
             style={styles.signUpBtn}
             disabled={disabled}
-            onPress={() => validation()}>
+            onPress={() => btn_signUp()}>
+            <Image style={styles.btnIcon} source={IconLinks.login} />
             <Text
               style={[
                 styles.btnTxt,
@@ -234,7 +277,7 @@ export default SignUpScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.loSiNavContainer}>
-          <Text style={styles.loSiTxt}>{'Are you already a user?'}</Text>
+          <Text style={styles.loSiTxt}>{'Are you already an user?'}</Text>
           <TouchableOpacity
             style={styles.loSiNavBtn}
             onPress={() => navigation.replace('Login')}>
