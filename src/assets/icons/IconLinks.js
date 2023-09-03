@@ -16,4 +16,5 @@ export default IconLinks = {
   login: require('../icons/login.png'),
   logout: require('../icons/logout.png'),
   google: require('../icons/google.png'),
+  leftArrow: require('../icons/leftArrow.png'),
 };

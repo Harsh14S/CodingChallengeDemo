@@ -1,34 +1,16 @@
-import {
-  Dimensions,
-  Image,
-  LayoutAnimation,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import * as Colors from '../../assets/Colors';
 import CustomLoginTextInput from '../../common/components/CustomLoginTextInput';
 import IconLinks from '../../assets/icons/IconLinks';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {
-  emailRegEx,
-  nameRegEx,
-  nameRegEx2,
-  passwordRegEx2,
-  statusBarHeight,
-} from '../../assets/Constants';
-import {useDispatch} from 'react-redux';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {emailRegEx, passwordRegEx2} from '../../assets/Constants';
+import {useDispatch, useSelector} from 'react-redux';
 import {LoginSignupStyle as styles} from './LoginSignupStyle';
 import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
+import {Context} from '../../../global/ContextProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomFullLoader from '../../common/components/CustomFullLoader';
 
 GoogleSignin.configure({
   iosClientId:
@@ -39,50 +21,97 @@ GoogleSignin.configure({
 });
 
 export default LoginScreen = ({navigation}) => {
+  const {setIsUserLoggedIn} = useContext(Context);
   const dispatch = useDispatch();
+  const CurrentUser = useSelector(state => state.CurrentUserReducer);
 
-  const [nameV, setNameV] = useState('Test User');
-  const [emailV, setEmailV] = useState('ok@mailinator.com');
-  const [passwordV, setPasswordV] = useState('Test@123');
+  const [emailV, setEmailV] = useState('');
+  const [passwordV, setPasswordV] = useState('');
   const [emailE, setEmailE] = useState('');
   const [passwordE, setPasswordE] = useState('');
   const [disabled, setDisabled] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
 
   async function btn_googleSignIn() {
     try {
-      // await GoogleSignin.hasPlayServices();
-      // await GoogleSignin.signIn().then(res => {
-      //   const obj = {
-      //     name: res.user.name,
-      //     email: res.user.email,
-      //     googleLogin: true,
-      //   };
-      // dispatch(SignUpAction(obj));
-      // navigation.navigate('Home');
-      // console.log('userInfo ----> ', obj);
-      // });
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn().then(async res => {
+        const user = {
+          name: res.user.name,
+          email: res.user.email,
+          googleLogin: true,
+        };
+
+        let userData = await AsyncStorage.getItem('allUser');
+        let data = JSON.parse(userData);
+
+        if (data) {
+          // check whether the user email exist or not from asyncStorage
+          const uniqueUser =
+            data?.filter(item => item?.email === user.email).length === 0;
+          if (uniqueUser) {
+            // saving the user to asyncstorage
+            let obj = [...data, user];
+            saveAllUsers(obj);
+            dispatch(CurrentUserAction(user));
+          } else {
+            dispatch(CurrentUserAction(user));
+          }
+        } else {
+          let obj = [user];
+          saveAllUsers(obj);
+          dispatch(CurrentUserAction(user));
+        }
+      });
     } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
+      console.log('Google signin error ----> ', error);
     }
   }
 
-  function btn_login() {
-    const obj = {
+  // saveAllUsers :- adds the user to allUser
+  async function saveAllUsers(item) {
+    try {
+      await AsyncStorage.setItem('allUser', JSON.stringify(item));
+    } catch (error) {
+      console.log('error while adding user: ', error);
+    }
+  }
+
+  // saveCurrentUser :- adds to Currrent User
+  async function saveCurrentUser(item) {
+    try {
+      await AsyncStorage.setItem('currentUser', JSON.stringify(item));
+    } catch (error) {
+      console.log('error while adding current user: ', error);
+    }
+  }
+
+  async function btn_login() {
+    const user = {
       email: emailV,
       password: passwordV,
       googleLogin: false,
     };
-    dispatch(CurrentUserAction(obj));
-    // navigation.replace('Home');
+
+    await AsyncStorage.getItem('allUser').then(res => {
+      const data = JSON.parse(res);
+      const userExist = data?.filter(item => item?.email === user.email);
+      if (userExist?.length === 0) {
+        setEmailE(`User doesn't exits, please signup`);
+      } else {
+        if (userExist?.[0]?.googleLogin) {
+          setEmailE(`Entered email is a google user, please login with google`);
+        } else {
+          if (passwordV === userExist?.[0]?.password) {
+            dispatch(CurrentUserAction(userExist?.[0]));
+          } else {
+            setPasswordE(`Password doesn't matches`);
+          }
+        }
+      }
+    });
   }
+
   function validation() {
     if (!emailRegEx.test(emailV)) {
       setEmailE('Please enter a valid email');
@@ -103,9 +132,20 @@ export default LoginScreen = ({navigation}) => {
     }
   }, [emailV, passwordV]);
 
+  useEffect(() => {
+    if (CurrentUser?.CurrentUserSuccess) {
+      if (CurrentUser?.data) {
+        saveCurrentUser(CurrentUser?.data);
+        setShowLoader(false);
+        setIsUserLoggedIn(true);
+      }
+    }
+  }, [CurrentUser]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView />
+      <CustomFullLoader showLoader={showLoader} />
       <View style={styles.headerContainer}>
         <Text style={styles.headerTxt}>{'Login'}</Text>
       </View>
@@ -149,7 +189,13 @@ export default LoginScreen = ({navigation}) => {
             style={styles.signUpBtn}
             disabled={disabled}
             onPress={() => validation()}>
-            <Image style={styles.btnIcon} source={IconLinks.login} />
+            <Image
+              style={[
+                styles.btnIcon,
+                {tintColor: disabled ? Colors.LightGrey : Colors.Black},
+              ]}
+              source={IconLinks.login}
+            />
             <Text
               style={[
                 styles.btnTxt,

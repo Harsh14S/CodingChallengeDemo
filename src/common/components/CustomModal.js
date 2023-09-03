@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   SafeAreaView,
   StatusBar,
@@ -17,11 +18,14 @@ import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
 import {useDispatch} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 
+const {height, width} = Dimensions.get('screen');
+
 export default CustomModal = ({
   bottomSheetRef,
   navigation,
   currentSelected,
   setLoader,
+  isProfile,
 }) => {
   const dispatch = useDispatch();
   const {setCurrentSelected} = useContext(Context);
@@ -46,23 +50,11 @@ export default CustomModal = ({
   }
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      snapPoints={['5%', '30%']}
-      style={{
-        backgroundColor: Colors.White,
-        shadowOpacity: 0.5,
-        shadowRadius: 1,
-        elevation: 2,
-        shadowOffset: {
-          height: 0,
-          width: 0,
-        },
-      }}>
+    <BottomSheet ref={bottomSheetRef} snapPoints={['5%', '37%']}>
       <BottomSheetView style={styles.main}>
-        <BottomSheetView style={styles.container}>
+        <View style={styles.container}>
           <TouchableOpacity
-            disabled={currentSelected === 'todo'}
+            disabled={currentSelected === 'todo' || isProfile}
             style={[styles.dataBtnStyle, {marginBottom: 20}]}
             onPress={() => btn_todo()}>
             <Image
@@ -70,7 +62,9 @@ export default CustomModal = ({
                 styles.btnIcon,
                 {
                   tintColor:
-                    currentSelected === 'todo' ? Colors.LightGrey : '#333333',
+                    currentSelected === 'todo' || isProfile
+                      ? Colors.LightGrey
+                      : '#333333',
                 },
               ]}
               source={IconLinks.taskFill}
@@ -80,7 +74,7 @@ export default CustomModal = ({
                 styles.btnTxt,
                 {
                   color:
-                    currentSelected === 'todo'
+                    currentSelected === 'todo' || isProfile
                       ? Colors.LightGrey
                       : Colors.Black,
                 },
@@ -89,7 +83,7 @@ export default CustomModal = ({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            disabled={currentSelected === 'posts'}
+            disabled={currentSelected === 'posts' || isProfile}
             style={styles.dataBtnStyle}
             onPress={() => btn_posts()}>
             <Image
@@ -97,7 +91,9 @@ export default CustomModal = ({
                 styles.btnIcon,
                 {
                   tintColor:
-                    currentSelected === 'posts' ? Colors.LightGrey : '#333333',
+                    currentSelected === 'posts' || isProfile
+                      ? Colors.LightGrey
+                      : '#333333',
                 },
               ]}
               source={IconLinks.postFill}
@@ -107,7 +103,7 @@ export default CustomModal = ({
                 styles.btnTxt,
                 {
                   color:
-                    currentSelected === 'posts'
+                    currentSelected === 'posts' || isProfile
                       ? Colors.LightGrey
                       : Colors.Black,
                 },
@@ -115,19 +111,38 @@ export default CustomModal = ({
               {'Posts'}
             </Text>
           </TouchableOpacity>
-        </BottomSheetView>
-        <BottomSheetView style={styles.btnStyleView}>
+        </View>
+
+        <View style={styles.btnStyleView}>
           <TouchableOpacity
+            disabled={isProfile ? false : true}
             style={styles.bottomBtnStyle}
             onPress={() => btn_show()}>
-            <Text style={styles.bottomBtnTxt}>{'Show'}</Text>
+            <Text
+              style={[
+                styles.bottomBtnTxt,
+                {
+                  color: isProfile ? Colors.Black : Colors.LightGrey,
+                },
+              ]}>
+              {'Show'}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
+            disabled={isProfile ? true : false}
             style={styles.bottomBtnStyle}
             onPress={() => btn_profile()}>
-            <Text style={styles.bottomBtnTxt}>{'Profile'}</Text>
+            <Text
+              style={[
+                styles.bottomBtnTxt,
+                {
+                  color: isProfile ? Colors.LightGrey : Colors.Black,
+                },
+              ]}>
+              {'Profile'}
+            </Text>
           </TouchableOpacity>
-        </BottomSheetView>
+        </View>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -135,8 +150,7 @@ export default CustomModal = ({
 
 const styles = StyleSheet.create({
   main: {
-    // height: 350,
-    flex: 1,
+    height: height * 0.35,
     width: '100%',
   },
   container: {
@@ -165,7 +179,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     paddingHorizontal: 40,
-    paddingBottom: 20,
+    paddingBottom: 30,
   },
   btnIcon: {
     height: 20,

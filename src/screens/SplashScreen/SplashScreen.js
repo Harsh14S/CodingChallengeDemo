@@ -6,26 +6,27 @@ import {useDispatch} from 'react-redux';
 import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
 import {Context} from '../../../global/ContextProvider';
 
-export default SplashScreen = ({navigation}) => {
-  const {setIsUserLoggedIn} = useContext(Context);
+export default SplashScreen = () => {
+  const {setIsUserLoggedIn, setSplashComplete} = useContext(Context);
   const dispatch = useDispatch();
   const fade = useRef(new Animated.Value(0)).current;
 
   async function getCurrentUser() {
     const currentUser = JSON.parse(await AsyncStorage.getItem('currentUser'));
-
-    console.log('currentUser ----> ', currentUser);
     if (currentUser) {
       setTimeout(() => {
         animationFadeout();
-        dispatch(CurrentUserAction(currentUser));
-        setIsUserLoggedIn(true);
+        setTimeout(() => {
+          dispatch(CurrentUserAction(currentUser));
+          setIsUserLoggedIn(true);
+          setSplashComplete(true);
+        }, 1000);
       }, 1000);
     } else {
       setTimeout(() => {
         animationFadeout();
         setTimeout(() => {
-          navigation.replace('Login');
+          setSplashComplete(true);
         }, 1000);
       }, 1000);
     }

@@ -1,31 +1,10 @@
-import {
-  Dimensions,
-  Image,
-  LayoutAnimation,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import * as Colors from '../../assets/Colors';
 import CustomLoginTextInput from '../../common/components/CustomLoginTextInput';
 import IconLinks from '../../assets/icons/IconLinks';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import {
-  emailRegEx,
-  nameRegEx,
-  nameRegEx2,
-  passwordRegEx2,
-  statusBarHeight,
-} from '../../assets/Constants';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {emailRegEx, nameRegEx2, passwordRegEx2} from '../../assets/Constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {LoginSignupStyle as styles} from './LoginSignupStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -46,28 +25,47 @@ export default SignUpScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const CurrentUser = useSelector(state => state.CurrentUserReducer);
 
-  const [nameV, setNameV] = useState('Test User');
-  const [emailV, setEmailV] = useState('ok@mailinator.com');
-  const [passwordV, setPasswordV] = useState('Test@123');
-  const [cPasswordV, setCPasswordV] = useState('Test@123');
+  const [nameV, setNameV] = useState('');
+  const [emailV, setEmailV] = useState('');
+  const [passwordV, setPasswordV] = useState('');
+  const [cPasswordV, setCPasswordV] = useState('');
   const [nameE, setNameE] = useState('');
   const [emailE, setEmailE] = useState('');
   const [passwordE, setPasswordE] = useState('');
   const [cPasswordE, setCPasswordE] = useState('');
-  const [userInfo, setUserInfo] = useState({});
   const [disabled, setDisabled] = useState(true);
   const [showLoader, setShowLoader] = useState(false);
 
   async function btn_googleSignIn() {
     try {
       await GoogleSignin.hasPlayServices();
-      await GoogleSignin.signIn().then(res => {
-        const obj = {
+      await GoogleSignin.signIn().then(async res => {
+        const user = {
           name: res.user.name,
           email: res.user.email,
           googleLogin: true,
         };
-        dispatch(CurrentUserAction(obj));
+
+        let userData = await AsyncStorage.getItem('allUser');
+        let data = JSON.parse(userData);
+
+        if (data) {
+          // check whether the user email exist or not from asyncStorage
+          const uniqueUser =
+            data?.filter(item => item?.email === user.email).length === 0;
+          if (uniqueUser) {
+            // saving the user to asyncstorage
+            let obj = [...data, user];
+            saveAllUsers(obj);
+            dispatch(CurrentUserAction(user));
+          } else {
+            dispatch(CurrentUserAction(user));
+          }
+        } else {
+          let obj = [user];
+          saveAllUsers(obj);
+          dispatch(CurrentUserAction(user));
+        }
       });
     } catch (error) {
       console.log('Google signin error ----> ', error);
@@ -84,7 +82,6 @@ export default SignUpScreen = ({navigation}) => {
   }
 
   // saveCurrentUser :- adds to Currrent User
-
   async function saveCurrentUser(item) {
     try {
       await AsyncStorage.setItem('currentUser', JSON.stringify(item));
@@ -106,14 +103,17 @@ export default SignUpScreen = ({navigation}) => {
 
     if (data) {
       // check whether the user email exist or not from asyncStorage
-      const uniqueUser =
-        data?.filter(item => item?.email === user.email).length === 0;
-      if (uniqueUser) {
+      const uniqueUser = data?.filter(item => item?.email === user.email);
+      if (uniqueUser?.length === 0) {
         let obj = [...data, user];
         saveAllUsers(obj);
         dispatch(CurrentUserAction(user));
       } else {
-        setEmailE('Email already taken');
+        if (uniqueUser?.[0]?.googleLogin) {
+          setEmailE('Email is already taken, Please login with google');
+        } else {
+          setEmailE('Email is already taken, Please select different email id');
+        }
         setShowLoader(false);
       }
     } else {
@@ -176,7 +176,6 @@ export default SignUpScreen = ({navigation}) => {
         setIsUserLoggedIn(true);
       }
     }
-    console.log('CurrentUser ====> ', CurrentUser);
   }, [CurrentUser]);
 
   return (
@@ -257,7 +256,13 @@ export default SignUpScreen = ({navigation}) => {
             style={styles.signUpBtn}
             disabled={disabled}
             onPress={() => btn_signUp()}>
-            <Image style={styles.btnIcon} source={IconLinks.login} />
+            <Image
+              style={[
+                styles.btnIcon,
+                {tintColor: disabled ? Colors.LightGrey : Colors.Black},
+              ]}
+              source={IconLinks.login}
+            />
             <Text
               style={[
                 styles.btnTxt,

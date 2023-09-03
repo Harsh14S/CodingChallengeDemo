@@ -1,11 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import * as Colors from '../../assets/Colors';
 
 export default HeaderComponent = ({headerStyle, title}) => {
   return (
     <View style={[styles.headerContainer, headerStyle]}>
-      <Text style={styles.headerTxt}>{title}</Text>
+      {title ? <Text style={styles.headerTxt}>{title}</Text> : null}
     </View>
   );
 };
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingVertical: 10,
+    paddingHorizontal: 10,
     height: 50,
     shadowOpacity: 0.5,
     shadowRadius: 1,
@@ -28,8 +28,10 @@ const styles = StyleSheet.create({
     },
   },
   headerTxt: {
+    flex: 1,
     fontSize: 18,
     fontWeight: '500',
     color: Colors.Black,
+    textAlign: 'center',
   },
 });

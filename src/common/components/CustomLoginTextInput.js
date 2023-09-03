@@ -15,6 +15,7 @@ export default CustomLoginTextInput = ({
   containerStyle,
   icon,
   secure,
+  // placeholder,
   eTxt,
   ...props
 }) => {
@@ -25,6 +26,8 @@ export default CustomLoginTextInput = ({
         {label ? <Text style={styles.labelTxt}>{label}</Text> : null}
         {icon ? <Image source={icon} style={styles.inputIcon} /> : null}
         <TextInput
+          placeholderTextColor={Colors.DarkGrey}
+          // placeholder={placeholder}
           style={styles.txtInputStyle}
           secureTextEntry={hide}
           {...props}

@@ -9,4 +9,8 @@
 5. yarn add @react-navigation/native
 6. yarn add react-native-screens react-native-safe-area-context
 7. yarn add @react-navigation/native-stack
-8. yarn add redux-saga
+8. yarn add redux -saga
+<!-- Bottom Sheet -->
+9. yarn add @gorhom/bottom-sheet@^4 <!-- https://gorhom.github.io/react-native-bottom-sheet/ -->
+10. yarn add react-native-reanimated react-native-gesture-handler <!-- prefer documentation for setup -->
+11. yarn add react-native-modalize <!-- Tried but not appropriate as per the requirements -->

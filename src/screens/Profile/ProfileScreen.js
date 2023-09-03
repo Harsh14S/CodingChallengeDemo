@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import HeaderComponent from '../../common/components/HeaderComponent';
 import {Context} from '../../../global/ContextProvider';
 import CustomModal from '../../common/components/CustomModal';
@@ -16,39 +16,54 @@ import * as Colors from '../../assets/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {ProfileStyles as styles} from './ProfileStyles';
+import {ResetDataAction} from '../../redux/action/ResetDataAction';
+import LogoutModal from '../../common/components/LogoutModal';
 
-export default Profile = ({navigation}) => {
+export default ProfileScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const bottomSheet = useRef(null);
   const {setIsUserLoggedIn} = useContext(Context);
   const CurrentUser = useSelector(state => state.CurrentUserReducer);
   const [userData, setUserData] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   async function btn_logout() {
     if (userData?.googleLogin) {
       try {
         await GoogleSignin.signOut().then(async () => {
-          await AsyncStorage.removeItem('currentUser').then(() => {
-            setIsUserLoggedIn(false);
-          });
+          await AsyncStorage.removeItem('currentUser')
+            .then(() => {
+              dispatch(ResetDataAction());
+            })
+            .then(() => {
+              setIsUserLoggedIn(false);
+            });
         });
       } catch (error) {
         console.error('Google logout error ', error);
       }
     } else {
-      await AsyncStorage.removeItem('currentUser').then(() => {
-        setIsUserLoggedIn(false);
-      });
+      await AsyncStorage.removeItem('currentUser')
+        .then(() => {
+          dispatch(ResetDataAction());
+        })
+        .then(() => {
+          setIsUserLoggedIn(false);
+        });
     }
+  }
+  function btn_cancel() {
+    setShowModal(false);
   }
 
   useEffect(() => {
     if (CurrentUser?.CurrentUserSuccess) {
       if (CurrentUser?.data) {
         setUserData(CurrentUser?.data);
-        console.log('CurrentUser ----> ', CurrentUser?.data);
       }
     }
   }, [CurrentUser]);
+
   return (
     <View style={styles.container}>
       <SafeAreaView />
@@ -66,14 +81,21 @@ export default Profile = ({navigation}) => {
       <View style={styles.btnContainer}>
         <TouchableOpacity
           style={styles.logoutBtn}
-          onPress={() => {
-            btn_logout();
-          }}>
+          onPress={() => setShowModal(true)}>
           <Image style={styles.btnIcon} source={IconLinks.logout} />
           <Text style={styles.btnTxt}>{'Logout'}</Text>
         </TouchableOpacity>
       </View>
-      <CustomModal bottomSheetRef={bottomSheet} navigation={navigation} />
+      <CustomModal
+        bottomSheetRef={bottomSheet}
+        navigation={navigation}
+        isProfile={true}
+      />
+      <LogoutModal
+        showMoadal={showModal}
+        onLogout={btn_logout}
+        onCancel={btn_cancel}
+      />
     </View>
   );
 };
