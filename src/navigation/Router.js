@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import * as Colors from '../assets/Colors';
 import HomeScreen from '../screens/Home/HomeScreen';
@@ -9,8 +10,10 @@ import LoginScreen from '../screens/LoginSignup/LoginScreen';
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import ShowItemScreen from '../screens/ShowItem/ShowItemScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
+import TabComponent from '../common/components/TabComponent';
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default Router = () => {
   const {isUserLoggedIn, splashComplete} = useContext(Context);
@@ -25,8 +28,7 @@ export default Router = () => {
             headerShown: false,
             contentStyle: {backgroundColor: Colors.White},
           }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="TabNav" component={TabNav} />
           <Stack.Screen name="ShowItem" component={ShowItemScreen} />
         </Stack.Navigator>
       );
@@ -55,4 +57,28 @@ export default Router = () => {
       </Stack.Navigator>
     );
   }
+};
+
+const TabNav = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarButton: props => <TabComponent label={'Show'} {...props} />,
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarButton: props => <TabComponent label={'Profile'} {...props} />,
+        }}
+      />
+    </Tab.Navigator>
+  );
 };

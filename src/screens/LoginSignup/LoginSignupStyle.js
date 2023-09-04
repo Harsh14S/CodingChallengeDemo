@@ -1,35 +1,37 @@
 import {StyleSheet} from 'react-native';
 import * as Colors from '../../assets/Colors';
 import {statusBarHeight} from '../../assets/Constants';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 export const LoginSignupStyle = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: statusBarHeight,
   },
   headerContainer: {
-    paddingVertical: 10,
+    paddingBottom: RFValue(10),
+    paddingTop: RFValue(20),
     alignItems: 'center',
   },
   headerTxt: {
-    fontSize: 30,
-    fontWeight: '700',
+    fontSize: RFValue(30),
+    fontFamily: Fonts.Bold,
     color: Colors.Black,
   },
   mainContainer: {
     flex: 1,
-    marginHorizontal: 20,
-    paddingTop: 20,
+    marginHorizontal: RFValue(20),
+    paddingTop: RFValue(20),
   },
   emailLoginContainer: {
-    // backgroundColor: 'grey',
-    marginTop: 20,
+    marginTop: RFValue(20),
   },
   separatorTxt: {
     textAlign: 'center',
-    fontSize: 20,
-    fontWeight: '500',
+    fontSize: RFValue(20),
+    fontFamily: Fonts.Medium,
     color: Colors.Black,
-    marginVertical: 30,
+    marginVertical: RFValue(30),
   },
   btnContainer: {
     width: '100%',
@@ -38,12 +40,12 @@ export const LoginSignupStyle = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     width: '100%',
-    paddingVertical: 7,
-    borderRadius: 5,
+    paddingVertical: RFValue(7),
+    borderRadius: RFValue(5),
     justifyContent: 'center',
     alignItems: 'center',
     shadowOpacity: 0.5,
-    shadowRadius: 1,
+    shadowRadius: RFValue(1),
     elevation: 3,
     shadowOffset: {
       height: 0,
@@ -51,23 +53,32 @@ export const LoginSignupStyle = StyleSheet.create({
     },
   },
   btnIcon: {
-    height: 20,
-    width: 20,
-    marginRight: 10,
+    height: RFValue(20),
+    width: RFValue(20),
+    marginRight: RFValue(10),
   },
   btnTxt: {
     textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: RFValue(16),
+    fontFamily: Fonts.Medium,
     color: Colors.Black,
   },
   loSiNavContainer: {
     backgroundColor: Colors.White,
-    marginTop: 25,
+    marginTop: RFValue(25),
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  loSiTxt: {fontSize: 14, fontWeight: '400', color: Colors.Black},
-  loSiNavBtn: {marginLeft: 5},
-  loSiNavTxt: {fontSize: 14, fontWeight: '500', color: Colors.Black},
+  loSiTxt: {
+    fontSize: RFValue(12),
+    fontFamily: Fonts.Regular,
+    color: Colors.Black,
+  },
+  loSiNavBtn: {marginLeft: RFValue(5)},
+  loSiNavTxt: {
+    fontSize: RFValue(14),
+    fontFamily: Fonts.Medium,
+    color: Colors.Black,
+  },
 });

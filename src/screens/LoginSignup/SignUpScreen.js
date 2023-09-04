@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomFullLoader from '../../common/components/CustomFullLoader';
 import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
 import {Context} from '../../../global/ContextProvider';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 GoogleSignin.configure({
   iosClientId:
@@ -201,7 +202,7 @@ export default SignUpScreen = ({navigation}) => {
             }}
             onBlur={() => {}}
             onFocus={() => {}}
-            containerStyle={{marginBottom: 15}}
+            containerStyle={{marginBottom: RFValue(15)}}
             eTxt={nameE}
           />
           <CustomLoginTextInput
@@ -217,7 +218,7 @@ export default SignUpScreen = ({navigation}) => {
             }}
             onBlur={() => {}}
             onFocus={() => {}}
-            containerStyle={{marginBottom: 15}}
+            containerStyle={{marginBottom: RFValue(15)}}
             eTxt={emailE}
           />
           <CustomLoginTextInput
@@ -233,7 +234,7 @@ export default SignUpScreen = ({navigation}) => {
             }}
             onBlur={() => {}}
             onFocus={() => {}}
-            containerStyle={{marginBottom: 15}}
+            containerStyle={{marginBottom: RFValue(15)}}
             eTxt={passwordE}
           />
           <CustomLoginTextInput
@@ -249,7 +250,7 @@ export default SignUpScreen = ({navigation}) => {
             }}
             onBlur={() => {}}
             onFocus={() => {}}
-            containerStyle={{marginBottom: 30}}
+            containerStyle={{marginBottom: RFValue(30)}}
             eTxt={cPasswordE}
           />
         </View>

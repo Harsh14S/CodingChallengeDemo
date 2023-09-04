@@ -1,8 +1,6 @@
 import {
   Dimensions,
   Image,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,19 +8,19 @@ import {
 } from 'react-native';
 import React, {useContext} from 'react';
 import * as Colors from '../../assets/Colors';
-import {Modalize} from 'react-native-modalize';
 import {Context} from '../../../global/ContextProvider';
 import IconLinks from '../../assets/icons/IconLinks';
 import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
 import {GetPostsDataAction} from '../../redux/action/GetPostsDataAction';
 import {useDispatch} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const {height, width} = Dimensions.get('screen');
 
 export default CustomModal = ({
   bottomSheetRef,
-  navigation,
   currentSelected,
   setLoader,
   isProfile,
@@ -30,12 +28,6 @@ export default CustomModal = ({
   const dispatch = useDispatch();
   const {setCurrentSelected} = useContext(Context);
 
-  function btn_show() {
-    navigation.replace('Home');
-  }
-  function btn_profile() {
-    navigation.replace('Profile');
-  }
   function btn_todo() {
     setLoader(true);
     setCurrentSelected('todo');
@@ -50,12 +42,15 @@ export default CustomModal = ({
   }
 
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={['5%', '37%']}>
+    <BottomSheet
+      ref={bottomSheetRef}
+      backgroundStyle={styles.bottomSheetStyle}
+      snapPoints={['4%', '30%']}>
       <BottomSheetView style={styles.main}>
         <View style={styles.container}>
           <TouchableOpacity
             disabled={currentSelected === 'todo' || isProfile}
-            style={[styles.dataBtnStyle, {marginBottom: 20}]}
+            style={[styles.dataBtnStyle, {marginBottom: RFValue(20)}]}
             onPress={() => btn_todo()}>
             <Image
               style={[
@@ -112,63 +107,38 @@ export default CustomModal = ({
             </Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.btnStyleView}>
-          <TouchableOpacity
-            disabled={isProfile ? false : true}
-            style={styles.bottomBtnStyle}
-            onPress={() => btn_show()}>
-            <Text
-              style={[
-                styles.bottomBtnTxt,
-                {
-                  color: isProfile ? Colors.Black : Colors.LightGrey,
-                },
-              ]}>
-              {'Show'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            disabled={isProfile ? true : false}
-            style={styles.bottomBtnStyle}
-            onPress={() => btn_profile()}>
-            <Text
-              style={[
-                styles.bottomBtnTxt,
-                {
-                  color: isProfile ? Colors.LightGrey : Colors.Black,
-                },
-              ]}>
-              {'Profile'}
-            </Text>
-          </TouchableOpacity>
-        </View>
       </BottomSheetView>
     </BottomSheet>
   );
 };
 
 const styles = StyleSheet.create({
+  bottomSheetStyle: {
+    elevation: 5,
+    shadowOpacity: 0.5,
+    shadowOffset: {height: 0, width: 0},
+    shadowRadius: RFValue(2),
+  },
   main: {
-    height: height * 0.35,
+    height: height * 0.25,
     width: '100%',
   },
   container: {
     flex: 1,
-    padding: 40,
+    padding: RFValue(40),
     justifyContent: 'center',
   },
   dataBtnStyle: {
     backgroundColor: Colors.White,
     flexDirection: 'row',
     width: '100%',
-    paddingVertical: 7,
-    borderRadius: 5,
+    paddingVertical: RFValue(7),
+    borderRadius: RFValue(5),
     justifyContent: 'center',
     alignItems: 'center',
     shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 2,
+    shadowRadius: RFValue(1),
+    elevation: 1,
     shadowOffset: {
       height: 0,
       width: 0,
@@ -178,40 +148,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-    paddingHorizontal: 40,
-    paddingBottom: 30,
+    paddingHorizontal: RFValue(40),
+    paddingBottom: RFValue(30),
   },
   btnIcon: {
-    height: 20,
-    width: 20,
-    marginRight: 10,
+    height: RFValue(20),
+    width: RFValue(20),
+    marginRight: RFValue(10),
     tintColor: '#333333',
   },
   btnTxt: {
     textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: RFValue(18),
+    fontFamily: Fonts.Regular,
     color: Colors.Black,
-  },
-  bottomBtnStyle: {
-    paddingHorizontal: 35,
-    width: '46%',
-    height: 40,
-    backgroundColor: Colors.White,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 2,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-  },
-  bottomBtnTxt: {
-    fontSize: 20,
-    color: Colors.Black,
-    fontWeight: '500',
   },
 });

@@ -7,6 +7,7 @@ export default IconLinks = {
   eyeOpenFill: require('../icons/eyeOpenFill.png'),
   eyeClose: require('../icons/eyeClose.png'),
   eyeCloseFill: require('../icons/eyeCloseFill.png'),
+  profileLarge: require('../icons/profileLarge.png'),
   profile: require('../icons/profile.png'),
   profileFill: require('../icons/profileFill.png'),
   task: require('../icons/task.png'),

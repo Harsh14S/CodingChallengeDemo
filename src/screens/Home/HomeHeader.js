@@ -3,35 +3,39 @@ import React, {useEffect, useState} from 'react';
 import * as Colors from '../../assets/Colors';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default HomeHeader = ({headerStyle}) => {
   const CurrentUser = useSelector(state => state.CurrentUserReducer);
 
   const [greetTitle, setGreetTitle] = useState('');
+  const [userName, setUserName] = useState('');
 
   function headerTitle(user) {
+    setUserName(user?.name);
     const currentTime = moment();
     let title = '';
     if (
       currentTime.isBetween(moment('04:00', 'HH:mm'), moment('12:00', 'HH:mm'))
     ) {
-      title = 'Good Morning, ' + user?.name;
+      title = 'Good Morning,';
       setGreetTitle(title);
     }
     if (
       currentTime.isBetween(moment('12:00', 'HH:mm'), moment('16:00', 'HH:mm'))
     ) {
-      title = 'Good Afternoon, ' + user?.name;
+      title = 'Good Afternoon,';
       setGreetTitle(title);
     } else if (
       currentTime.isBetween(moment('16:00', 'HH:mm'), moment('23:59', 'HH:mm'))
     ) {
-      title = 'Good Night, ' + user?.name;
+      title = 'Good Night,';
       setGreetTitle(title);
     } else if (
       currentTime.isBetween(moment('00:00', 'HH:mm'), moment('04:00', 'HH:mm'))
     ) {
-      title = 'Good Night, ' + user?.name;
+      title = 'Good Night,';
       setGreetTitle(title);
     }
   }
@@ -44,7 +48,9 @@ export default HomeHeader = ({headerStyle}) => {
   }, [CurrentUser]);
   return (
     <View style={[styles.headerContainer, headerStyle]}>
-      <Text style={styles.headerTxt}>{greetTitle}</Text>
+      <Text style={styles.headerTxt}>
+        {greetTitle} <Text style={styles.userNameTxt}>{userName}</Text>
+      </Text>
     </View>
   );
 };
@@ -52,23 +58,18 @@ export default HomeHeader = ({headerStyle}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
-    backgroundColor: Colors.White,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingVertical: 10,
-    height: 50,
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 3,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
+    height: RFValue(50),
+    marginTop: RFValue(10),
   },
   headerTxt: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: RFValue(18),
+    fontFamily: Fonts.Medium,
+    color: Colors.Black,
+  },
+  userNameTxt: {
     color: Colors.Black,
   },
 });

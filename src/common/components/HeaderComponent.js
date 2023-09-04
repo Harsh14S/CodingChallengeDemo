@@ -1,6 +1,8 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import * as Colors from '../../assets/Colors';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default HeaderComponent = ({headerStyle, title}) => {
   return (
@@ -13,25 +15,17 @@ export default HeaderComponent = ({headerStyle, title}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
-    backgroundColor: Colors.White,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
-    height: 50,
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    elevation: 3,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
+    height: RFValue(50),
+    marginTop: RFValue(10),
   },
   headerTxt: {
     flex: 1,
-    fontSize: 18,
-    fontWeight: '500',
-    color: Colors.Black,
+    fontSize: RFValue(24),
+    fontFamily: Fonts.Medium,
+    color: Colors.White,
     textAlign: 'center',
   },
 });

@@ -4,6 +4,8 @@ import * as Colors from '../../assets/Colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {Context} from '../../../global/ContextProvider';
 import {GetTodoDataAction} from '../../redux/action/GetTodoDataAction';
+import {RFValue} from 'react-native-responsive-fontsize';
+import Fonts from '../../assets/Fonts';
 
 export default RenderDataComponent = ({setLoader, navigation}) => {
   const dispatch = useDispatch();
@@ -48,16 +50,26 @@ export default RenderDataComponent = ({setLoader, navigation}) => {
         initialNumToRender={30}
         contentContainerStyle={styles.flatlistContentContainer}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <View style={styles.flatlistHeaderContainer}>
+            <Text style={styles.flatlistHeaderTxt}>
+              {currentSelected === 'todo' ? 'Todo List' : 'Post List'}
+            </Text>
+          </View>
+        }
         data={data}
+        keyExtractor={(item, index) => item.id.toString()}
         ItemSeparatorComponent={() => (
           <View style={styles.flatlistItemSeparator} />
         )}
+        extraData={data}
         renderItem={({item, index}) => (
           <TouchableOpacity
             style={styles.itemBtnStyle}
             onPress={() => btn_itemPressed(item)}>
-            <Text style={styles.bulletTxt}>{index + 1 + '. '}</Text>
-            <Text style={styles.titleTxt}>{item?.title}</Text>
+            <Text style={styles.titleTxt} numberOfLines={1}>
+              {item?.title}
+            </Text>
           </TouchableOpacity>
         )}
       />
@@ -68,14 +80,32 @@ export default RenderDataComponent = ({setLoader, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
+    paddingHorizontal: RFValue(20),
   },
-  flatlistContentContainer: {paddingBottom: 50, marginHorizontal: 30},
-  flatlistItemSeparator: {marginVertical: 5},
+  flatlistContentContainer: {
+    paddingBottom: RFValue(50),
+    paddingVertical: RFValue(20),
+  },
+  flatlistItemSeparator: {
+    marginVertical: RFValue(5),
+    borderBottomWidth: RFValue(0.6),
+    borderColor: Colors.LightGrey,
+  },
+  flatlistHeaderContainer: {marginBottom: RFValue(10)},
+  flatlistHeaderTxt: {
+    color: Colors.DarkGrey,
+    fontFamily: Fonts.Medium,
+    fontSize: RFValue(24),
+    textAlign: 'center',
+  },
   itemBtnStyle: {
     flexDirection: 'row',
-    paddingVertical: 5,
+    paddingVertical: RFValue(5),
   },
   bulletTxt: {color: Colors.DarkGrey},
-  titleTxt: {color: Colors.Black, flexWrap: 'wrap'},
+  titleTxt: {
+    color: Colors.Black,
+    flexWrap: 'wrap',
+    marginHorizontal: RFValue(10),
+  },
 });

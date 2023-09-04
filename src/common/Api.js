@@ -1,9 +1,8 @@
-const todoApi = 'https://jsonplaceholder.typicode.com/todos';
-const postsApi = 'https://jsonplaceholder.typicode.com/posts';
+const URL = 'https://jsonplaceholder.typicode.com/';
 
 module.exports = {
   async getPostsData() {
-    return fetch(`${postsApi}`, {
+    return fetch(`${URL}todos`, {
       method: 'GET',
     })
       .then(async res => {
@@ -15,7 +14,7 @@ module.exports = {
       });
   },
   async getTodoData() {
-    return fetch(`${todoApi}`, {
+    return fetch(`${URL}posts`, {
       method: 'GET',
     })
       .then(async res => {

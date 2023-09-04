@@ -13,4 +13,7 @@
 <!-- Bottom Sheet -->
 9. yarn add @gorhom/bottom-sheet@^4 <!-- https://gorhom.github.io/react-native-bottom-sheet/ -->
 10. yarn add react-native-reanimated react-native-gesture-handler <!-- prefer documentation for setup -->
-11. yarn add react-native-modalize <!-- Tried but not appropriate as per the requirements -->
+
+<!-- Extra -->
+
+11. yarn add react-native-responsive-fontsize

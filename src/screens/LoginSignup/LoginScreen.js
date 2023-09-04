@@ -4,13 +4,14 @@ import * as Colors from '../../assets/Colors';
 import CustomLoginTextInput from '../../common/components/CustomLoginTextInput';
 import IconLinks from '../../assets/icons/IconLinks';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {emailRegEx, passwordRegEx2} from '../../assets/Constants';
+import {emailRegEx} from '../../assets/Constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {LoginSignupStyle as styles} from './LoginSignupStyle';
 import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
 import {Context} from '../../../global/ContextProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomFullLoader from '../../common/components/CustomFullLoader';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 GoogleSignin.configure({
   iosClientId:
@@ -171,7 +172,7 @@ export default LoginScreen = ({navigation}) => {
             }}
             onBlur={() => {}}
             onFocus={() => {}}
-            containerStyle={{marginBottom: 15}}
+            containerStyle={{marginBottom: RFValue(15)}}
             eTxt={emailE}
           />
           <CustomLoginTextInput
@@ -187,7 +188,7 @@ export default LoginScreen = ({navigation}) => {
             }}
             onBlur={() => {}}
             onFocus={() => {}}
-            containerStyle={{marginBottom: 15}}
+            containerStyle={{marginBottom: RFValue(15)}}
             eTxt={passwordE}
           />
         </View>

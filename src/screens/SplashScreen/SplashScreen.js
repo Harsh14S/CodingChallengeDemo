@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {CurrentUserAction} from '../../redux/action/CurrentUserAction';
 import {Context} from '../../../global/ContextProvider';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default SplashScreen = () => {
   const {setIsUserLoggedIn, setSplashComplete} = useContext(Context);
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   },
   splashTxt: {
     color: Colors.Black,
-    fontSize: 36,
-    fontWeight: '700',
+    fontSize: RFValue(30),
+    fontFamily: Fonts.Bold,
   },
 });

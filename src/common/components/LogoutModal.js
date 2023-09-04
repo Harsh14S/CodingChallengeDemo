@@ -1,6 +1,8 @@
 import {StyleSheet, Text, View, Modal, TouchableOpacity} from 'react-native';
 import React from 'react';
 import * as Colors from '../../assets/Colors';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default LogoutModal = ({showMoadal, onLogout, onCancel}) => {
   return (
@@ -48,33 +50,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerStyle: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
-    flex: 1,
-    // paddingHorizontal: 40,
   },
   mainContainer: {
     backgroundColor: Colors.White,
     width: '80%',
-    padding: 20,
-    borderRadius: 8,
+    padding: RFValue(20),
+    borderRadius: RFValue(8),
   },
   alertTitleTxt: {
     color: Colors.Black,
     textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '500',
-    marginTop: 10,
+    fontSize: RFValue(16),
+    fontFamily: Fonts.Regular,
+    marginTop: RFValue(10),
   },
-  btnContainer: {flexDirection: 'row', marginTop: 30},
+  btnContainer: {flexDirection: 'row', marginTop: RFValue(30)},
   btn: {
-    paddingVertical: 10,
-    borderRadius: 5,
+    paddingVertical: RFValue(10),
+    borderRadius: RFValue(5),
     backgroundColor: Colors.White,
     flex: 1,
     shadowOpacity: 0.5,
-    shadowRadius: 1,
+    shadowRadius: RFValue(1),
     elevation: 2,
     shadowOffset: {
       height: 0,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   },
   btnTxt: {
     textAlign: 'center',
-    fontSize: 16,
-    fontWeight: '400',
+    fontSize: RFValue(16),
+    fontFamily: Fonts.Regular,
   },
 });

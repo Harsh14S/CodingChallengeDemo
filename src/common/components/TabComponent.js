@@ -1,32 +1,24 @@
 import React, {useContext} from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import * as Colors from '../../assets/Colors';
-import {Context} from '../../../global/ContextProvider';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 const TabComponent = ({label, accessibilityState, onPress, onLongPress}) => {
   const focused = accessibilityState.selected;
-  const {bottomSheetRef} = useContext(Context);
 
   return (
     <TouchableOpacity
       hitSlop={{left: 10, right: 10, top: 10, bottom: 10}}
       activeOpacity={1}
-      style={{
-        flex: 1,
-        paddingHorizontal: 35,
-        // backgroundColor: Colors.White,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 10,
-      }}
+      style={styles.btn}
       onLongPress={onLongPress}
       onPress={onPress}>
       <Text
-        style={{
-          fontSize: 20,
-          color: focused ? Colors.Black : Colors.DarkGrey,
-          fontWeight: '500',
-        }}>
+        style={[
+          styles.labelTxt,
+          {color: focused ? Colors.Black : Colors.DarkGrey},
+        ]}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -34,3 +26,18 @@ const TabComponent = ({label, accessibilityState, onPress, onLongPress}) => {
 };
 
 export default TabComponent;
+
+const styles = StyleSheet.create({
+  btn: {
+    flex: 1,
+    paddingTop: RFValue(6),
+    paddingHorizontal: RFValue(35),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: RFValue(10),
+  },
+  labelTxt: {
+    fontSize: RFValue(18),
+    fontFamily: Fonts.Medium,
+  },
+});

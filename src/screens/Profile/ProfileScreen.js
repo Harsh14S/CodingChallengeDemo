@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import HeaderComponent from '../../common/components/HeaderComponent';
 import {Context} from '../../../global/ContextProvider';
 import CustomModal from '../../common/components/CustomModal';
 import IconLinks from '../../assets/icons/IconLinks';
@@ -17,6 +16,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {ProfileStyles as styles} from './ProfileStyles';
 import {ResetDataAction} from '../../redux/action/ResetDataAction';
 import LogoutModal from '../../common/components/LogoutModal';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default ProfileScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -66,18 +66,21 @@ export default ProfileScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <SafeAreaView />
-      <HeaderComponent title={'Profile'} />
+
       <View style={styles.mainContainer}>
-        <View style={styles.userDataRow}>
-          <Image source={IconLinks.profileFill} style={styles.userDataIcon} />
-          <Text style={styles.userDetailTxt}>{userData?.name}</Text>
+        <View style={styles.profileContainer}>
+          <Image style={styles.profileImage} source={IconLinks.profileLarge} />
         </View>
-        <View style={styles.userDataRow}>
-          <Image source={IconLinks.mailFill} style={styles.userDataIcon} />
-          <Text style={styles.userDetailTxt}>{userData?.email}</Text>
+        <View style={styles.userDetailContainer}>
+          <View style={styles.userDataRow}>
+            <Image source={IconLinks.profileFill} style={styles.userDataIcon} />
+            <Text style={styles.userDetailTxt}>{userData?.name}</Text>
+          </View>
+          <View style={styles.userDataRow}>
+            <Image source={IconLinks.mailFill} style={styles.userDataIcon} />
+            <Text style={styles.userDetailTxt}>{userData?.email}</Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.btnContainer}>
         <TouchableOpacity
           style={styles.logoutBtn}
           onPress={() => setShowModal(true)}>

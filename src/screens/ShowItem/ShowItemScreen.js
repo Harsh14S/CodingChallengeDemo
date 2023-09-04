@@ -10,6 +10,8 @@ import React from 'react';
 import * as Colors from '../../assets/Colors';
 import {statusBarHeight} from '../../assets/Constants';
 import IconLinks from '../../assets/icons/IconLinks';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default ShowItemScreen = ({navigation, route}) => {
   const {type, data} = route?.params;
@@ -77,38 +79,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingHorizontal: 10,
-    height: 50,
+    paddingHorizontal: RFValue(10),
+    height: RFValue(50),
   },
-  backBtnIcon: {height: 30, width: 30, resizeMode: 'contain'},
+  backBtnIcon: {height: RFValue(30), width: RFValue(30), resizeMode: 'contain'},
   backBtn: {
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: RFValue(10),
   },
   headerTitleContainer: {
     flex: 1,
     alignItems: 'flex-end',
-    paddingRight: 20,
+    paddingRight: RFValue(20),
     justifyContent: 'center',
   },
-  headerTitleTxt: {color: Colors.Black, fontSize: 24, fontWeight: '500'},
+  headerTitleTxt: {
+    color: Colors.Black,
+    fontSize: RFValue(24),
+    fontFamily: Fonts.Medium,
+  },
   mainContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: RFValue(20),
     justifyContent: 'center',
     alignItems: 'center',
   },
   detailsContainer: {
     width: '100%',
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    paddingHorizontal: 15,
-    borderRadius: 6,
+    paddingVertical: RFValue(20),
+    paddingHorizontal: RFValue(10),
+    paddingHorizontal: RFValue(15),
+    borderRadius: RFValue(6),
     backgroundColor: Colors.White,
     shadowOpacity: 0.5,
-    shadowRadius: 1,
+    shadowRadius: RFValue(1),
     elevation: 2,
     shadowOffset: {
       height: 0,
@@ -117,21 +123,21 @@ const styles = StyleSheet.create({
   },
   detailsRow: {
     flexDirection: 'row',
-    paddingVertical: 5,
-    paddingHorizontal: 5,
+    paddingVertical: RFValue(5),
+    paddingHorizontal: RFValue(5),
   },
   detailKeyTxt: {
     flex: 1,
-    fontSize: 16,
+    fontSize: RFValue(16),
     color: Colors.Black,
-    fontWeight: '500',
+    fontFamily: Fonts.Medium,
     textAlign: 'right',
   },
   detailValueTxt: {
     flex: 4,
-    fontSize: 16,
+    fontSize: RFValue(16),
     color: Colors.Black,
-    fontWeight: '400',
-    marginLeft: 7,
+    fontFamily: Fonts.Regular,
+    marginLeft: RFValue(7),
   },
 });

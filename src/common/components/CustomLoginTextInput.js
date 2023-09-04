@@ -1,21 +1,21 @@
 import {
   Image,
-  LayoutAnimation,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import * as Colors from '../../assets/Colors';
+import Fonts from '../../assets/Fonts';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export default CustomLoginTextInput = ({
   label,
   containerStyle,
   icon,
   secure,
-  // placeholder,
   eTxt,
   ...props
 }) => {
@@ -27,7 +27,6 @@ export default CustomLoginTextInput = ({
         {icon ? <Image source={icon} style={styles.inputIcon} /> : null}
         <TextInput
           placeholderTextColor={Colors.DarkGrey}
-          // placeholder={placeholder}
           style={styles.txtInputStyle}
           secureTextEntry={hide}
           {...props}
@@ -36,8 +35,6 @@ export default CustomLoginTextInput = ({
           <TouchableOpacity
             style={styles.btnStyle}
             onPress={() => setHide(!hide)}
-            // onPressIn={() => setHide(false)}
-            // onPressOut={() => setHide(true)}
             hitSlop={{top: 15, bottom: 15, right: 15, left: 15}}>
             <Image
               source={!hide ? IconLinks.eyeCloseFill : IconLinks.eyeOpenFill}
@@ -52,17 +49,14 @@ export default CustomLoginTextInput = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: 'red',
-  },
   txtInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.White,
-    borderRadius: 4,
-    paddingHorizontal: 10,
+    borderRadius: RFValue(4),
+    paddingHorizontal: RFValue(10),
     shadowOpacity: 0.5,
-    shadowRadius: 1,
+    shadowRadius: RFValue(1),
     elevation: 3,
     shadowOffset: {
       height: 0,
@@ -70,35 +64,35 @@ const styles = StyleSheet.create({
     },
   },
   labelTxt: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: RFValue(18),
+    fontFamily: Fonts.Medium,
     color: Colors.Black,
-    marginRight: 10,
+    marginRight: RFValue(10),
   },
   inputIcon: {
-    height: 20,
-    width: 20,
+    height: RFValue(20),
+    width: RFValue(20),
     resizeMode: 'contain',
   },
   txtInputStyle: {
     flex: 1,
-    padding: 10,
+    padding: RFValue(10),
     color: Colors.Black,
   },
   btnStyle: {
-    marginRight: 5,
+    marginRight: RFValue(5),
   },
   eyeIcon: {
-    height: 20,
-    width: 20,
+    height: RFValue(20),
+    width: RFValue(20),
     resizeMode: 'contain',
   },
   errorTxtStyle: {
-    marginHorizontal: 5,
-    fontSize: 12,
-    fontWeight: '400',
+    marginHorizontal: RFValue(5),
+    fontSize: RFValue(12),
+    fontFamily: Fonts.Regular,
     color: Colors.Red,
-    marginTop: 2,
+    marginTop: RFValue(2),
     flexWrap: 'wrap',
   },
 });

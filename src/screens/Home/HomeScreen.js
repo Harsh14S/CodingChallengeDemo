@@ -21,7 +21,7 @@ export default HomeScreen = ({navigation}) => {
         showLoader={loader}
         loaderColor={Colors.DarkGreen}
       />
-      <HomeHeader headerStyle={styles.headerStyle} />
+      <HomeHeader />
       <RenderDataComponent setLoader={setLoader} navigation={navigation} />
       <CustomModal
         currentSelected={currentSelected}
@@ -37,7 +37,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: statusBarHeight,
-    backgroundColor: Colors.Black11,
   },
-  headerStyle: {marginBottom: 10}
 });
