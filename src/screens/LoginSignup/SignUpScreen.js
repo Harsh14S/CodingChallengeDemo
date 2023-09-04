@@ -89,6 +89,7 @@ export default SignUpScreen = ({navigation}) => {
     } catch (error) {
       console.log('error while adding current user: ', error);
     }
+    setIsUserLoggedIn(true); // changing the router navigation
   }
 
   async function signUpFunction() {
@@ -176,7 +177,6 @@ export default SignUpScreen = ({navigation}) => {
         // after signup or google btn is pressed
         saveCurrentUser(CurrentUser?.data); // saves the current user to async storage
         setShowLoader(false); // stops the loader
-        setIsUserLoggedIn(true); // changing the router navigation
       }
     }
   }, [CurrentUser]);

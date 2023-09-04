@@ -1,11 +1,4 @@
-import {
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Context} from '../../../global/ContextProvider';
@@ -16,7 +9,6 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {ProfileStyles as styles} from './ProfileStyles';
 import {ResetDataAction} from '../../redux/action/ResetDataAction';
 import LogoutModal from '../../common/components/LogoutModal';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export default ProfileScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -30,25 +22,20 @@ export default ProfileScreen = ({navigation}) => {
     if (userData?.googleLogin) {
       try {
         await GoogleSignin.signOut().then(async () => {
-          await AsyncStorage.removeItem('currentUser')
-            .then(() => {
-              dispatch(ResetDataAction());
-            })
-            .then(() => {
-              setIsUserLoggedIn(false);
-            });
+          await AsyncStorage.removeItem('currentUser');
+          setShowModal(false);
+          dispatch(ResetDataAction());
+
+          setIsUserLoggedIn(false);
         });
       } catch (error) {
         console.error('Google logout error ', error);
       }
     } else {
-      await AsyncStorage.removeItem('currentUser')
-        .then(() => {
-          dispatch(ResetDataAction());
-        })
-        .then(() => {
-          setIsUserLoggedIn(false);
-        });
+      await AsyncStorage.removeItem('currentUser');
+      setShowModal(false);
+      dispatch(ResetDataAction());
+      setIsUserLoggedIn(false);
     }
   }
   function btn_cancel() {

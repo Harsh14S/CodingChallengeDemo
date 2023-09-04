@@ -12,7 +12,10 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
   if (action.type === RESET_ALL_DATA) {
-    return appReducer(undefined, action);
+    return appReducer(
+      {CurrentUserReducer: {}, GetTodoDataReducer: {}, GetPostsDataReducer: {}},
+      action,
+    );
   }
 
   return appReducer(state, action);

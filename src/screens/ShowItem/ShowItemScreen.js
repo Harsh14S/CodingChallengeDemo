@@ -103,8 +103,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     paddingHorizontal: RFValue(20),
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: RFValue(15),
   },
   detailsContainer: {
     width: '100%',
@@ -127,15 +126,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: RFValue(5),
   },
   detailKeyTxt: {
-    flex: 1,
-    fontSize: RFValue(16),
+    flex: 1.2,
+    fontSize: RFValue(14),
     color: Colors.Black,
     fontFamily: Fonts.Medium,
     textAlign: 'right',
   },
   detailValueTxt: {
     flex: 4,
-    fontSize: RFValue(16),
+    fontSize: RFValue(14),
     color: Colors.Black,
     fontFamily: Fonts.Regular,
     marginLeft: RFValue(7),
