@@ -27,7 +27,7 @@ export default ShowItemScreen = ({navigation, route}) => {
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitleTxt}>
-            {type === 'todo' ? 'ToDo' : 'Post'}
+            {type === 'todo' ? 'To Do' : 'Post'}
           </Text>
         </View>
       </View>

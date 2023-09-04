@@ -1,5 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const todoApi = 'https://jsonplaceholder.typicode.com/todos';
 const postsApi = 'https://jsonplaceholder.typicode.com/posts';
 

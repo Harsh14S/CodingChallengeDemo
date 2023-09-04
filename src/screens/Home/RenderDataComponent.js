@@ -17,20 +17,25 @@ export default RenderDataComponent = ({setLoader, navigation}) => {
   }
 
   useEffect(() => {
+    // calling a default action when the homescreen is rendered
     dispatch(GetTodoDataAction());
   }, []);
 
   useEffect(() => {
     if (currentSelected === 'todo') {
+      // if currently, todo is selected
       if (GetTodoData?.GetTodoDataSuccess) {
         if (GetTodoData?.data) {
+          // when the data in redux store is changed after calling the action
           setLoader(false);
           setData(GetTodoData?.data);
         }
       }
     } else if (currentSelected === 'posts') {
+      // if currently, posts is selected
       if (GetPostsData?.GetPostsDataSuccess) {
         if (GetPostsData?.data) {
+          // when the data in redux store is changed after calling the action
           setData(GetPostsData?.data);
           setLoader(false);
         }

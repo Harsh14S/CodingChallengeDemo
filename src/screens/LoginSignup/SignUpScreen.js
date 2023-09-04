@@ -162,6 +162,7 @@ export default SignUpScreen = ({navigation}) => {
 
   useEffect(() => {
     if (nameV.trim() && emailV.trim() && passwordV && cPasswordV) {
+      // if name, email, password and confirm password field is empty
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -171,9 +172,10 @@ export default SignUpScreen = ({navigation}) => {
   useEffect(() => {
     if (CurrentUser?.CurrentUserSuccess) {
       if (CurrentUser?.data) {
-        saveCurrentUser(CurrentUser?.data);
-        setShowLoader(false);
-        setIsUserLoggedIn(true);
+        // after signup or google btn is pressed
+        saveCurrentUser(CurrentUser?.data); // saves the current user to async storage
+        setShowLoader(false); // stops the loader
+        setIsUserLoggedIn(true); // changing the router navigation
       }
     }
   }, [CurrentUser]);

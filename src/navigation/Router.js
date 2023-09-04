@@ -1,10 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as Colors from '../assets/Colors';
 import HomeScreen from '../screens/Home/HomeScreen';
-import Profile from '../screens/Profile/ProfileScreen';
 import {Context} from '../../global/ContextProvider';
 import SignUpScreen from '../screens/LoginSignup/SignUpScreen';
 import LoginScreen from '../screens/LoginSignup/LoginScreen';
@@ -18,7 +16,9 @@ export default Router = () => {
   const {isUserLoggedIn, splashComplete} = useContext(Context);
 
   if (splashComplete) {
+    // to show splash only one time when app is initiated
     if (isUserLoggedIn) {
+      // user is already logged in
       return (
         <Stack.Navigator
           screenOptions={{
@@ -31,6 +31,7 @@ export default Router = () => {
         </Stack.Navigator>
       );
     } else {
+      // if user is logged out or a new user
       return (
         <Stack.Navigator
           screenOptions={{
@@ -43,6 +44,7 @@ export default Router = () => {
       );
     }
   } else {
+    // showing splash on starting of app
     return (
       <Stack.Navigator
         screenOptions={{

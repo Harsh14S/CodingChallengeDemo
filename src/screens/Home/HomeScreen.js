@@ -3,7 +3,7 @@ import React, {useContext, useRef, useState} from 'react';
 import {statusBarHeight} from '../../assets/Constants';
 import CustomFullLoader from '../../common/components/CustomFullLoader';
 import * as Colors from '../../assets/Colors';
-import GreetingComponent from './GreetingComponent';
+import HomeHeader from './HomeHeader';
 import RenderDataComponent from './RenderDataComponent';
 import CustomModal from '../../common/components/CustomModal';
 import {Context} from '../../../global/ContextProvider';
@@ -21,7 +21,7 @@ export default HomeScreen = ({navigation}) => {
         showLoader={loader}
         loaderColor={Colors.DarkGreen}
       />
-      <GreetingComponent headerStyle={{marginBottom: 10}} />
+      <HomeHeader headerStyle={styles.headerStyle} />
       <RenderDataComponent setLoader={setLoader} navigation={navigation} />
       <CustomModal
         currentSelected={currentSelected}
@@ -39,4 +39,5 @@ const styles = StyleSheet.create({
     paddingTop: statusBarHeight,
     backgroundColor: Colors.Black11,
   },
+  headerStyle: {marginBottom: 10}
 });

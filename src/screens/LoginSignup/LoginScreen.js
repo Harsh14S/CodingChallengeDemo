@@ -94,14 +94,19 @@ export default LoginScreen = ({navigation}) => {
     };
 
     await AsyncStorage.getItem('allUser').then(res => {
+      // to get all stored users from Async Storage
       const data = JSON.parse(res);
       const userExist = data?.filter(item => item?.email === user.email);
-      if (userExist?.length === 0) {
+      if (userExist?.length === 0 || data === null) {
+        // user doesn't exists
         setEmailE(`User doesn't exits, please signup`);
       } else {
+        // user exists
         if (userExist?.[0]?.googleLogin) {
+          // existing user is google user
           setEmailE(`Entered email is a google user, please login with google`);
         } else {
+          // existing user is not a google user
           if (passwordV === userExist?.[0]?.password) {
             dispatch(CurrentUserAction(userExist?.[0]));
           } else {
@@ -119,13 +124,14 @@ export default LoginScreen = ({navigation}) => {
       setEmailE('');
     }
 
-    if (emailRegEx.test(emailV) && passwordRegEx2.test(passwordV)) {
+    if (emailRegEx.test(emailV)) {
       btn_login();
     }
   }
 
   useEffect(() => {
     if (emailV.trim() && passwordV) {
+      // if email and password field is empty
       setDisabled(false);
     } else {
       setDisabled(true);
@@ -135,9 +141,10 @@ export default LoginScreen = ({navigation}) => {
   useEffect(() => {
     if (CurrentUser?.CurrentUserSuccess) {
       if (CurrentUser?.data) {
-        saveCurrentUser(CurrentUser?.data);
-        setShowLoader(false);
-        setIsUserLoggedIn(true);
+        // after signup or google btn is pressed
+        saveCurrentUser(CurrentUser?.data); // saves the current user to async storage
+        setShowLoader(false); // stops the loader
+        setIsUserLoggedIn(true); // changing the router navigation
       }
     }
   }, [CurrentUser]);

@@ -12,7 +12,6 @@ import HeaderComponent from '../../common/components/HeaderComponent';
 import {Context} from '../../../global/ContextProvider';
 import CustomModal from '../../common/components/CustomModal';
 import IconLinks from '../../assets/icons/IconLinks';
-import * as Colors from '../../assets/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {ProfileStyles as styles} from './ProfileStyles';

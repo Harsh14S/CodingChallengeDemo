@@ -4,7 +4,7 @@ import * as Colors from '../../assets/Colors';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
 
-export default GreetingComponent = ({headerStyle}) => {
+export default HomeHeader = ({headerStyle}) => {
   const CurrentUser = useSelector(state => state.CurrentUserReducer);
 
   const [greetTitle, setGreetTitle] = useState('');
@@ -23,7 +23,14 @@ export default GreetingComponent = ({headerStyle}) => {
     ) {
       title = 'Good Afternoon, ' + user?.name;
       setGreetTitle(title);
-    } else {
+    } else if (
+      currentTime.isBetween(moment('16:00', 'HH:mm'), moment('23:59', 'HH:mm'))
+    ) {
+      title = 'Good Night, ' + user?.name;
+      setGreetTitle(title);
+    } else if (
+      currentTime.isBetween(moment('00:00', 'HH:mm'), moment('04:00', 'HH:mm'))
+    ) {
       title = 'Good Night, ' + user?.name;
       setGreetTitle(title);
     }
