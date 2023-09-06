@@ -1,5 +1,5 @@
 import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import * as Colors from '../../assets/Colors';
 import CustomLoginTextInput from '../../common/components/CustomLoginTextInput';
 import IconLinks from '../../assets/icons/IconLinks';
@@ -12,6 +12,8 @@ import {Context} from '../../../global/ContextProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomFullLoader from '../../common/components/CustomFullLoader';
 import {RFValue} from 'react-native-responsive-fontsize';
+import Instagram from 'react-native-instagram-login';
+import Api from '../../common/Api';
 
 GoogleSignin.configure({
   iosClientId:
@@ -25,13 +27,39 @@ export default LoginScreen = ({navigation}) => {
   const {setIsUserLoggedIn} = useContext(Context);
   const dispatch = useDispatch();
   const CurrentUser = useSelector(state => state.CurrentUserReducer);
-
+  const instaRef = useRef();
   const [emailV, setEmailV] = useState('');
   const [passwordV, setPasswordV] = useState('');
   const [emailE, setEmailE] = useState('');
   const [passwordE, setPasswordE] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [showLoader, setShowLoader] = useState(false);
+  const [instaToken, setInstaToken] = useState({});
+
+  async function btn_instagramSignIn() {
+    setShowLoader(true);
+    instaRef.current.show();
+    // getInstaUserInfo();
+  }
+
+  useEffect(() => {
+    if (instaToken?.access_token) {
+      const {user_id, access_token} = instaToken;
+      getInstaUserInfo(access_token);
+    }
+  }, [instaToken]);
+
+  async function getInstaUserInfo(access_token) {
+    await Api.getInstaUsername(access_token)
+      .then(res => {
+        setShowLoader(false);
+        console.log('get username ----> ', res);
+      })
+      .catch(e => {
+        setShowLoader(false);
+        console.log('Errorrrrr -----> ', e);
+      });
+  }
 
   async function btn_googleSignIn() {
     try {
@@ -222,6 +250,15 @@ export default LoginScreen = ({navigation}) => {
             <Text style={styles.btnTxt}>{'Google'}</Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.separatorTxt}>Or</Text>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity
+            style={styles.signUpBtn}
+            onPress={() => btn_instagramSignIn()}>
+            <Image style={styles.btnIcon} source={IconLinks.instagram} />
+            <Text style={styles.btnTxt}>{'Instagram'}</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.loSiNavContainer}>
           <Text style={styles.loSiTxt}>{'Create your new account?'}</Text>
           <TouchableOpacity
@@ -231,6 +268,20 @@ export default LoginScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
+      <Instagram
+        ref={instaRef}
+        appId="688295709994559"
+        appSecret="282356e16d4136c3a127a51b55a85d4b"
+        redirectUrl="https://github.com/"
+        incognito={false}
+        scopes={['user_profile', 'user_media']}
+        onLoginSuccess={token => {
+          setInstaToken(token);
+          console.log('insta token ----> ', token);
+        }}
+        onLoginFailure={data => console.log('On error ----> ', data)}
+        language="en" //default is 'en' for english
+      />
     </View>
   );
 };
