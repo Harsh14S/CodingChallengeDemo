@@ -39,4 +39,36 @@ module.exports = {
         console.log('getInstaUsername error ----->', e);
       });
   },
+  async getUserMediaIDCap(access_token) {
+    return fetch(
+      `${INSTA}me/media?fields=id,caption&access_token=${access_token}`,
+      {
+        method: 'GET',
+      },
+    )
+      .then(async res => {
+        const data = await res.json();
+        // console.log('getMediaID ----> ', data);
+        return data;
+      })
+      .catch(e => {
+        console.log('getInstaUsername error ----->', e);
+      });
+  },
+  async getUserMediaData(media_id, access_token) {
+    return fetch(
+      `${INSTA}${media_id}?fields=id,media_type,media_url,username,timestamp&access_token=${access_token}`,
+      {
+        method: 'GET',
+      },
+    )
+      .then(async res => {
+        const data = await res.json();
+        // console.log('getMediaID ----> ', data);
+        return data;
+      })
+      .catch(e => {
+        console.log('getInstaUsername error ----->', e);
+      });
+  },
 };

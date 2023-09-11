@@ -48,6 +48,7 @@ export default ProfileScreen = ({navigation}) => {
         setUserData(CurrentUser?.data);
       }
     }
+    console.log(CurrentUser?.data);
   }, [CurrentUser]);
 
   return (
@@ -56,7 +57,14 @@ export default ProfileScreen = ({navigation}) => {
 
       <View style={styles.mainContainer}>
         <View style={styles.profileContainer}>
-          <Image style={styles.profileImage} source={IconLinks.profileLarge} />
+          <Image
+            style={styles.profileImage}
+            source={
+              userData?.profile
+                ? {uri: userData?.profile}
+                : IconLinks.profileLarge
+            }
+          />
         </View>
         <View style={styles.userDetailContainer}>
           <View style={styles.userDataRow}>

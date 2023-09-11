@@ -11,6 +11,7 @@ import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import ShowItemScreen from '../screens/ShowItem/ShowItemScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import TabComponent from '../common/components/TabComponent';
+import InstaScreen from '../screens/Instagram/InstaScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,6 +43,7 @@ export default Router = () => {
           }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="Insta" component={InstaScreen} />
         </Stack.Navigator>
       );
     }

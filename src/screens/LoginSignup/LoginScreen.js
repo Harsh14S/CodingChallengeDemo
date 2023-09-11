@@ -37,7 +37,6 @@ export default LoginScreen = ({navigation}) => {
   const [instaToken, setInstaToken] = useState({});
 
   async function btn_instagramSignIn() {
-    setShowLoader(true);
     instaRef.current.show();
     // getInstaUserInfo();
   }
@@ -45,7 +44,12 @@ export default LoginScreen = ({navigation}) => {
   useEffect(() => {
     if (instaToken?.access_token) {
       const {user_id, access_token} = instaToken;
-      getInstaUserInfo(access_token);
+      navigation.navigate('Insta', {
+        data: instaToken,
+      });
+      // getInstaUserInfo(access_token);
+    } else {
+      setShowLoader(false);
     }
   }, [instaToken]);
 
@@ -68,6 +72,7 @@ export default LoginScreen = ({navigation}) => {
         const user = {
           name: res.user.name,
           email: res.user.email,
+          profile: res.user.photo,
           googleLogin: true,
         };
 
@@ -277,7 +282,7 @@ export default LoginScreen = ({navigation}) => {
         scopes={['user_profile', 'user_media']}
         onLoginSuccess={token => {
           setInstaToken(token);
-          console.log('insta token ----> ', token);
+          // console.log('insta token ----> ', token);
         }}
         onLoginFailure={data => console.log('On error ----> ', data)}
         language="en" //default is 'en' for english

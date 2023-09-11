@@ -21,6 +21,7 @@ export const ProfileStyles = StyleSheet.create({
   profileImage: {
     height: RFValue(120),
     width: RFValue(120),
+    borderRadius: 200,
     resizeMode: 'contain',
   },
   userDetailContainer: {flex: 1, paddingTop: RFValue(40)},
